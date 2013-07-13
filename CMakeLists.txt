@@ -117,28 +117,7 @@ rename_outdated_built_exes()
 # Export detail                                                                                    #
 #==================================================================================================#
 set(ExportFile ${CMAKE_BINARY_DIR}/maidsafe_export.cmake)
-export(TARGETS maidsafe_lifestuff
-               maidsafe_lifestuff_detail
-               maidsafe_lifestuff_manager
-               maidsafe_vault
-               maidsafe_nfs
-               maidsafe_routing
-               maidsafe_rudp
-               maidsafe_drive
-               maidsafe_encrypt
-               maidsafe_passport
-               maidsafe_private
-               maidsafe_common
-               maidsafe_network_viewer
-               leveldb
-               cryptopp
-               protobuf
-               protoc
-               gmock
-               gtest
-               FILE
-               ${ExportFile})
-file(APPEND ${ExportFile} "\n\n# Path to MaidSafe super-project root\n")
+file(WRITE ${ExportFile} "# Path to MaidSafe super-project root\n")
 file(APPEND ${ExportFile} "set(maidsafe_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")\n\n")
 file(APPEND ${ExportFile} "# Add module path to CMAKE_MODULE_PATH\n")
 file(APPEND ${ExportFile} "set(CMAKE_MODULE_PATH \"${maidsafe_SOURCE_DIR}/cmake_modules\")\n\n")
@@ -168,6 +147,28 @@ file(APPEND ${ExportFile} "# Set postfixes\n")
 file(APPEND ${ExportFile} "set(CMAKE_DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})\n")
 file(APPEND ${ExportFile} "set(CMAKE_RELWITHDEBINFO_POSTFIX ${CMAKE_RELWITHDEBINFO_POSTFIX})\n")
 file(APPEND ${ExportFile} "set(CMAKE_MINSIZEREL_POSTFIX ${CMAKE_MINSIZEREL_POSTFIX})\n\n")
+export(TARGETS maidsafe_lifestuff
+               maidsafe_lifestuff_detail
+               maidsafe_lifestuff_manager
+               maidsafe_vault
+               maidsafe_nfs
+               maidsafe_routing
+               maidsafe_rudp
+               maidsafe_drive
+               maidsafe_encrypt
+               maidsafe_passport
+               maidsafe_private
+               maidsafe_common
+               maidsafe_network_viewer
+               leveldb
+               cryptopp
+               protobuf
+               protoc
+               gmock
+               gtest
+               APPEND
+               FILE
+               ${ExportFile})
 
 
 #==================================================================================================#
