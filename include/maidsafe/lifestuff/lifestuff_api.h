@@ -24,8 +24,8 @@ namespace maidsafe {
 namespace lifestuff {
 
 // LifeStuff provides a convenient interface for client applications wishing to make use of the
-// novinet network, http://novinet.com/. Further details and links for LifeStuff can be found at
-// http://maidsafe.github.io/LifeStuff/. During user account creation, RSA asymmetric encryption
+// novinet network, http://www.novinet.com. Further details and links for LifeStuff can be found at
+// http://www.novinet.com/library-lifestuff. During user account creation, RSA asymmetric encryption
 // is applied to user input, producing uniquely identifiable data that is stored on the network.
 // It is important to note that in order to subsequently retrieve and decrypt the generated data
 // for an account, on login, the exact user input supplied to create the account must be passed,
@@ -44,7 +44,7 @@ class LifeStuff {
 
   // Note: Secure string classes for managing user input are provided by the input types Keyword,
   // Pin and Password defined in the MaidSafe-Passport project,
-  // http://maidsafe.github.io/MaidSafe-Passport/. The following four methods throw
+  // http://www.novinet.com/library-passport. The following four methods throw
   // CommonErrors::unknown for undefined 'input_field' type, otherwise propogate exceptions
   // unhandled.
 
@@ -72,7 +72,7 @@ class LifeStuff {
   // Stops the vault associated with the session and unmounts the virtual drive where applicable.
   void LogOut();
 
-  // Mounts a virtual drive, see http://maidsafe.github.io/MaidSafe-Drive/ for details.
+  // Mounts a virtual drive, see http://www.novinet.com/library-drive for details.
   void MountDrive();
   // Unmounts a mounted virtual drive when user has not logged in.
   void UnMountDrive();
