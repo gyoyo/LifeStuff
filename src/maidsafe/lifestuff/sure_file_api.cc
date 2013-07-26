@@ -13,77 +13,78 @@ implied. See the License for the specific language governing permissions and lim
 License.
 */
 
-#include "maidsafe/lifestuff/lifestuff_api.h"
+#include "maidsafe/lifestuff/sure_file_api.h"
 
 #include "maidsafe/lifestuff/lifestuff_impl.h"
 
 namespace maidsafe {
 namespace lifestuff {
 
-LifeStuff::LifeStuff(const Slots& slots)
-  : lifestuff_impl_(new LifeStuffImpl<Product::kLifeStuff>(slots)) {}
+  
+SureFile::SureFile(const Slots& slots)
+  : lifestuff_impl_(new LifeStuffImpl<Product::kSureFile>(slots)) {}
 
-LifeStuff::~LifeStuff() {}
+SureFile::~SureFile() {}
 
-void LifeStuff::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
+void SureFile::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
   return lifestuff_impl_->InsertUserInput(position, characters, input_field);
 }
 
-void LifeStuff::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
+void SureFile::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
   return lifestuff_impl_->RemoveUserInput(position, length, input_field);
 }
 
-void LifeStuff::ClearUserInput(InputField input_field) {
+void SureFile::ClearUserInput(InputField input_field) {
   return lifestuff_impl_->ClearUserInput(input_field);
 }
 
-bool LifeStuff::ConfirmUserInput(InputField input_field) {
+bool SureFile::ConfirmUserInput(InputField input_field) {
   return lifestuff_impl_->ConfirmUserInput(input_field);
 }
 
-void LifeStuff::CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress) {
+void SureFile::CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress) {
   return lifestuff_impl_->CreateUser(vault_path, report_progress);
 }
 
-void LifeStuff::LogIn(ReportProgressFunction& report_progress) {
+void SureFile::LogIn(ReportProgressFunction& report_progress) {
   return lifestuff_impl_->LogIn(report_progress);
 }
 
-void LifeStuff::LogOut() {
+void SureFile::LogOut() {
   return lifestuff_impl_->LogOut();
 }
 
-void LifeStuff::MountDrive() {
+void SureFile::MountDrive() {
   return lifestuff_impl_->MountDrive();
 }
 
-void LifeStuff::UnMountDrive() {
+void SureFile::UnMountDrive() {
   return lifestuff_impl_->UnMountDrive();
 }
 
-void LifeStuff::ChangeKeyword(ReportProgressFunction& report_progress) {
+void SureFile::ChangeKeyword(ReportProgressFunction& report_progress) {
   return lifestuff_impl_->ChangeKeyword(report_progress);
 }
 
-void LifeStuff::ChangePin(ReportProgressFunction& report_progress) {
+void SureFile::ChangePin(ReportProgressFunction& report_progress) {
   return lifestuff_impl_->ChangePin(report_progress);
 }
 
-void LifeStuff::ChangePassword(ReportProgressFunction& report_progress) {
+void SureFile::ChangePassword(ReportProgressFunction& report_progress) {
   return lifestuff_impl_->ChangePassword(report_progress);
 }
 
-bool LifeStuff::logged_in() const {
+bool SureFile::logged_in() const {
   return lifestuff_impl_->logged_in();
 }
 
-std::string LifeStuff::mount_path() {
+std::string SureFile::mount_path() {
   return lifestuff_impl_->mount_path().string();
 }
 
-std::string LifeStuff::owner_path() {
+std::string SureFile::owner_path() {
   return lifestuff_impl_->owner_path().string();
 }
 
-}  // namespace lifestuff
+}  // namespace SureFile
 }  // namespace maidsafe

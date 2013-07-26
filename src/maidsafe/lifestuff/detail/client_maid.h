@@ -123,7 +123,7 @@ ClientMaid<Product>::ClientMaid(Session& session, const Slots& slots)
   : slots_(CheckSlots(slots)),
     session_(session),
     client_controller_(new ClientController(slots_.update_available)),
-    storage_()
+    storage_(),
     user_storage_(),
     routing_handler_() {
 }
@@ -146,8 +146,8 @@ void ClientMaid<Product>::CreateUser(const Keyword& keyword,
     storage_.reset(new Storage(routing_handler_->routing(), maid));
     report_progress(kCreateUser, kCreatingVault);
     Pmid pmid(session_.passport().Get<Pmid>(false));
-    session_.set_vault_path(vault_path);
-    client_controller_->StartVault(pmid, maid.name(), vault_path);
+    session_.set_storage_path(storage_path);
+    client_controller_->StartVault(pmid, maid.name(), storage_path);
     RegisterPmid(maid, pmid);
     report_progress(kCreateUser, kCreatingUserCredentials);
     session_.passport().ConfirmFobs();
@@ -191,7 +191,7 @@ void ClientMaid<Product>::LogIn(const Keyword& keyword,
     report_progress(kLogin, kInitialisingClientComponents);
     storage_.reset(new Storage(routing_handler_->routing(), maid));
     report_progress(kLogin, kStartingVault);
-    client_controller_->StartVault(pmid, maid.name(), session_.vault_path());
+    client_controller_->StartVault(pmid, maid.name(), session_.storage_path());
     session_.set_keyword_pin_password(keyword, pin, password);
   }
   catch(const std::exception& e) {

@@ -13,8 +13,8 @@ implied. See the License for the specific language governing permissions and lim
 License.
 */
 
-#ifndef MAIDSAFE_LIFESTUFF_LIFESTUFF_API_H_
-#define MAIDSAFE_LIFESTUFF_LIFESTUFF_API_H_
+#ifndef MAIDSAFE_LIFESTUFF_SUREFILE_API_H_
+#define MAIDSAFE_LIFESTUFF_SUREFILE_API_H_
 
 #include <memory>
 
@@ -35,12 +35,12 @@ namespace lifestuff {
 
 template<Product Product> class LifeStuffImpl;
 
-class LifeStuff {
+class SureFile {
  public:
-  // LifeStuff constructor, refer to discussion in lifestuff.h for Slots. Throws
+  // SureFile constructor, refer to discussion in SureFile.h for Slots. Throws
   // CommonErrors::uninitialised if any 'slots' member has not been initialised.
-  explicit LifeStuff(const Slots& slots);
-  ~LifeStuff();
+  explicit SureFile(const Slots& slots);
+  ~SureFile();
 
   // Note: Secure string classes for managing user input are provided by the input types Keyword,
   // Pin and Password defined in the MaidSafe-Passport project,
@@ -49,7 +49,7 @@ class LifeStuff {
   // unhandled.
 
   // Creates and/or inserts a string of 'characters' at position 'position' in the input type,
-  // keyword, pin, password, etc., determined by 'input_field', see lifestuff.h for the
+  // keyword, pin, password, etc., determined by 'input_field', see SureFile.h for the
   // definition of InputField. Implicitly accepts Unicode characters converted to std::string.
   void InsertUserInput(uint32_t position, const std::string& characters, InputField input_field);
   // Removes the sequence of characters starting at position 'position' and ending at position
@@ -62,11 +62,11 @@ class LifeStuff {
 
   // Creates new user credentials, derived from input keyword, pin and password, that are
   // subsequently retrieved from the network during login. Also sets up a new vault associated
-  // with those credentials. Refer to details in lifestuff.h about ReportProgressFunction.
+  // with those credentials. Refer to details in SureFile.h about ReportProgressFunction.
   // If an exception is thrown during the call, attempts cleanup then rethrows the exception.
   void CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress);
   // Recovers session details subject to validation from input keyword, pin and password, and
-  // starts the appropriate vault. Refer to details in lifestuff.h about ReportProgressFunction.
+  // starts the appropriate vault. Refer to details in SureFile.h about ReportProgressFunction.
   // If an exception is thrown during the call, attempts cleanup then rethrows the exception.
   void LogIn(ReportProgressFunction& report_progress);
   // Stops the vault associated with the session and unmounts the virtual drive where applicable.
@@ -91,10 +91,10 @@ class LifeStuff {
   std::string owner_path();
 
  private:
-  std::unique_ptr<LifeStuffImpl<Product::kLifeStuff>> lifestuff_impl_;
+  std::unique_ptr<LifeStuffImpl<Product::kSureFile>> lifestuff_impl_;
 };
 
 }  // namespace lifestuff
 }  // namespace maidsafe
 
-#endif  // MAIDSAFE_LIFESTUFF_LIFESTUFF_API_H_
+#endif  // MAIDSAFE_LIFESTUFF_SUREFILE_API_H_

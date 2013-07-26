@@ -63,7 +63,7 @@ class LifeStuffImpl {
   std::unique_ptr<Pin> pin_, confirmation_pin_;
   std::unique_ptr<Password> password_, confirmation_password_, current_password_;
   Session session_;
-  ClientMaid client_maid_;
+  ClientMaid<Product> client_maid_;
   ClientMpid client_mpid_;
 };
 
@@ -234,7 +234,7 @@ void LifeStuffImpl<Product>::LogOut() {
 
 template<Product Product>
 void LifeStuffImpl<Product>::MountDrive() {
-  client_maid_.MountDrive();
+  client_maid_.MountDrive(session_.storage_path());
 }
 
 template<Product Product>
