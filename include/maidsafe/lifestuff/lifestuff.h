@@ -23,6 +23,12 @@ License.
 namespace maidsafe {
 namespace lifestuff {
 
+// Type that determines which product we're building.
+enum class Product : int {
+  kLifeStuff,
+  kSureFile
+};
+
 // Type passed to user input functions in LifeStuff class to determine which variable(s) to
 // process.
 enum InputField {

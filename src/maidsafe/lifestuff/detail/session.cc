@@ -56,8 +56,8 @@ std::string Session::root_parent_id() const {
   return user_details_.root_parent_id;
 }
 
-boost::filesystem::path Session::vault_path() const {
-  return user_details_.vault_path;
+boost::filesystem::path Session::storage_path() const {
+  return user_details_.storage_path;
 }
 
 int64_t Session::max_space() const {
@@ -97,8 +97,8 @@ void Session::set_root_parent_id(const std::string& root_parent_id) {
   user_details_.root_parent_id = root_parent_id;
 }
 
-void Session::set_vault_path(const boost::filesystem::path& vault_path) {
-  user_details_.vault_path = vault_path;
+void Session::set_storage_path(const boost::filesystem::path& vault_path) {
+  user_details_.storage_path = vault_path;
 }
 
 void Session::set_max_space(const int64_t& max_space) {
@@ -156,7 +156,7 @@ void Session::Parse(const NonEmptyString& serialised_data_atlas) {
 
   set_unique_user_id(Identity(data_atlas.user_data().unique_user_id()));
   set_root_parent_id(data_atlas.user_data().root_parent_id());
-  set_vault_path(data_atlas.user_data().vault_path());
+  set_storage_path(data_atlas.user_data().storage_path());
   set_max_space(data_atlas.user_data().max_space());
   set_used_space(data_atlas.user_data().used_space());
 
@@ -171,7 +171,7 @@ NonEmptyString Session::Serialise() {
   UserData* user_data(data_atlas.mutable_user_data());
   user_data->set_unique_user_id(unique_user_id().string());
   user_data->set_root_parent_id(root_parent_id());
-  user_data->set_vault_path(vault_path().string());
+  user_data->set_storage_path(storage_path().string());
   user_data->set_max_space(max_space());
   user_data->set_used_space(used_space());
 

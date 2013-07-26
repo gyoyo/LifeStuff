@@ -52,7 +52,7 @@ class Session {
   NonEmptyString session_name() const;
   Identity unique_user_id() const;
   std::string root_parent_id() const;
-  boost::filesystem::path vault_path() const;
+  boost::filesystem::path storage_path() const;
   int64_t max_space() const;
   int64_t used_space() const;
   bool initialised();
@@ -63,7 +63,7 @@ class Session {
   void set_session_name();
   void set_unique_user_id(const Identity& unique_user_id);
   void set_root_parent_id(const std::string& root_parent_id);
-  void set_vault_path(const boost::filesystem::path& vault_path);
+  void set_storage_path(const boost::filesystem::path& storage_path);
   void set_max_space(const int64_t& max_space);
   void set_used_space(const int64_t& used_space);
   void set_initialised();
@@ -88,13 +88,13 @@ class Session {
     UserDetails()
       : unique_user_id(),
         root_parent_id(),
-        vault_path(),
+        storage_path(),
         max_space(1073741824),
         used_space(0),
         session_name(EncodeToHex(crypto::SHA1Hash(RandomAlphaNumericString(20)))) {}
     Identity unique_user_id;
     std::string root_parent_id;
-    boost::filesystem::path vault_path;
+    boost::filesystem::path storage_path;
     int64_t max_space;
     int64_t used_space;
     NonEmptyString session_name;

@@ -33,8 +33,9 @@ namespace lifestuff {
 // or stored on the network, so that no mechanism is in place for it's recovery, it is therefore
 // important not only to create strong user details, but also to remember them.
 
-class LifeStuffImpl;
+template<Product Product> class LifeStuffImpl;
 
+template<Product Product>
 class LifeStuff {
  public:
   // LifeStuff constructor, refer to discussion in lifestuff.h for Slots. Throws
@@ -91,8 +92,93 @@ class LifeStuff {
   std::string owner_path();
 
  private:
-  std::unique_ptr<LifeStuffImpl> lifestuff_impl_;
+  std::unique_ptr<LifeStuffImpl<Product>> lifestuff_impl_;
 };
+
+// Implementation
+// --------------
+
+template<Product Product>
+LifeStuff<Product>::LifeStuff(const Slots& slots)
+  : lifestuff_impl_(new LifeStuffImpl(slots)) {}
+
+template<Product Product>
+LifeStuff<Product>::~LifeStuff() {}
+
+template<Product Product>
+void LifeStuff<Product>::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
+  return lifestuff_impl_->InsertUserInput(position, characters, input_field);
+}
+
+template<Product Product>
+void LifeStuff<Product>::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
+  return lifestuff_impl_->RemoveUserInput(position, length, input_field);
+}
+
+template<Product Product>
+void LifeStuff<Product>::ClearUserInput(InputField input_field) {
+  return lifestuff_impl_->ClearUserInput(input_field);
+}
+
+template<Product Product>
+bool LifeStuff<Product>::ConfirmUserInput(InputField input_field) {
+  return lifestuff_impl_->ConfirmUserInput(input_field);
+}
+
+template<Product Product>
+void LifeStuff<Product>::CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress) {
+  return lifestuff_impl_->CreateUser(vault_path, report_progress);
+}
+
+template<Product Product>
+void LifeStuff<Product>::LogIn(ReportProgressFunction& report_progress) {
+  return lifestuff_impl_->LogIn(report_progress);
+}
+
+template<Product Product>
+void LifeStuff<Product>::LogOut() {
+  return lifestuff_impl_->LogOut();
+}
+
+template<Product Product>
+void LifeStuff<Product>::MountDrive() {
+  return lifestuff_impl_->MountDrive();
+}
+
+template<Product Product>
+void LifeStuff<Product>::UnMountDrive() {
+  return lifestuff_impl_->UnMountDrive();
+}
+
+template<Product Product>
+void LifeStuff<Product>::ChangeKeyword(ReportProgressFunction& report_progress) {
+  return lifestuff_impl_->ChangeKeyword(report_progress);
+}
+
+template<Product Product>
+void LifeStuff<Product>::ChangePin(ReportProgressFunction& report_progress) {
+  return lifestuff_impl_->ChangePin(report_progress);
+}
+
+template<Product Product>
+void LifeStuff<Product>::ChangePassword(ReportProgressFunction& report_progress) {
+  return lifestuff_impl_->ChangePassword(report_progress);
+}
+
+template<Product Product>
+bool LifeStuff<Product>::logged_in() const {
+  return lifestuff_impl_->logged_in();
+}
+
+template<Product Product>
+std::string LifeStuff<Product>::mount_path() {
+  return lifestuff_impl_->mount_path().string();
+}
+
+template<Product Product>
+std::string LifeStuff<Product>::owner_path() {
+  return lifestuff_impl_->owner_path().string();
+}
 
 }  // namespace lifestuff
 }  // namespace maidsafe
