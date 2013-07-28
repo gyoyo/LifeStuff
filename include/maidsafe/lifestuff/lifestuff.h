@@ -29,6 +29,8 @@ enum class Product : int {
   kSureFile
 };
 
+template<Product Product> class ClientImpl;
+
 // Type passed to user input functions in LifeStuff class to determine which variable(s) to
 // process.
 enum InputField {

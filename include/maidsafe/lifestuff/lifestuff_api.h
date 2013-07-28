@@ -33,8 +33,6 @@ namespace lifestuff {
 // or stored on the network, so that no mechanism is in place for it's recovery, it is therefore
 // important not only to create strong user details, but also to remember them.
 
-template<Product Product> class LifeStuffImpl;
-
 class LifeStuff {
  public:
   // LifeStuff constructor, refer to discussion in lifestuff.h for Slots. Throws
@@ -64,7 +62,7 @@ class LifeStuff {
   // subsequently retrieved from the network during login. Also sets up a new vault associated
   // with those credentials. Refer to details in lifestuff.h about ReportProgressFunction.
   // If an exception is thrown during the call, attempts cleanup then rethrows the exception.
-  void CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress);
+  void CreateUser(const std::string& storage_path, ReportProgressFunction& report_progress);
   // Recovers session details subject to validation from input keyword, pin and password, and
   // starts the appropriate vault. Refer to details in lifestuff.h about ReportProgressFunction.
   // If an exception is thrown during the call, attempts cleanup then rethrows the exception.
@@ -91,7 +89,7 @@ class LifeStuff {
   std::string owner_path();
 
  private:
-  std::unique_ptr<LifeStuffImpl<Product::kLifeStuff>> lifestuff_impl_;
+  std::unique_ptr<ClientImpl<Product::kLifeStuff>> client_impl_;
 };
 
 }  // namespace lifestuff

@@ -15,74 +15,74 @@ License.
 
 #include "maidsafe/lifestuff/lifestuff_api.h"
 
-#include "maidsafe/lifestuff/lifestuff_impl.h"
+#include "maidsafe/lifestuff/client_impl.h"
 
 namespace maidsafe {
 namespace lifestuff {
 
 LifeStuff::LifeStuff(const Slots& slots)
-  : lifestuff_impl_(new LifeStuffImpl<Product::kLifeStuff>(slots)) {}
+  : client_impl_(new ClientImpl<Product::kLifeStuff>(slots)) {}
 
 LifeStuff::~LifeStuff() {}
 
 void LifeStuff::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
-  return lifestuff_impl_->InsertUserInput(position, characters, input_field);
+  return client_impl_->InsertUserInput(position, characters, input_field);
 }
 
 void LifeStuff::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
-  return lifestuff_impl_->RemoveUserInput(position, length, input_field);
+  return client_impl_->RemoveUserInput(position, length, input_field);
 }
 
 void LifeStuff::ClearUserInput(InputField input_field) {
-  return lifestuff_impl_->ClearUserInput(input_field);
+  return client_impl_->ClearUserInput(input_field);
 }
 
 bool LifeStuff::ConfirmUserInput(InputField input_field) {
-  return lifestuff_impl_->ConfirmUserInput(input_field);
+  return client_impl_->ConfirmUserInput(input_field);
 }
 
-void LifeStuff::CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->CreateUser(vault_path, report_progress);
+void LifeStuff::CreateUser(const std::string& storage_path, ReportProgressFunction& report_progress) {
+  return client_impl_->CreateUser(storage_path, report_progress);
 }
 
 void LifeStuff::LogIn(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->LogIn(report_progress);
+  return client_impl_->LogIn(report_progress);
 }
 
 void LifeStuff::LogOut() {
-  return lifestuff_impl_->LogOut();
+  return client_impl_->LogOut();
 }
 
 void LifeStuff::MountDrive() {
-  return lifestuff_impl_->MountDrive();
+  return client_impl_->MountDrive();
 }
 
 void LifeStuff::UnMountDrive() {
-  return lifestuff_impl_->UnMountDrive();
+  return client_impl_->UnMountDrive();
 }
 
 void LifeStuff::ChangeKeyword(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangeKeyword(report_progress);
+  return client_impl_->ChangeKeyword(report_progress);
 }
 
 void LifeStuff::ChangePin(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangePin(report_progress);
+  return client_impl_->ChangePin(report_progress);
 }
 
 void LifeStuff::ChangePassword(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangePassword(report_progress);
+  return client_impl_->ChangePassword(report_progress);
 }
 
 bool LifeStuff::logged_in() const {
-  return lifestuff_impl_->logged_in();
+  return client_impl_->logged_in();
 }
 
 std::string LifeStuff::mount_path() {
-  return lifestuff_impl_->mount_path().string();
+  return client_impl_->mount_path().string();
 }
 
 std::string LifeStuff::owner_path() {
-  return lifestuff_impl_->owner_path().string();
+  return client_impl_->owner_path().string();
 }
 
 }  // namespace lifestuff

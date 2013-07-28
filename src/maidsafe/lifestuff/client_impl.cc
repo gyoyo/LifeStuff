@@ -13,14 +13,14 @@ implied. See the License for the specific language governing permissions and lim
 License.
 */
 
-#include "maidsafe/lifestuff/lifestuff_impl.h"
+#include "maidsafe/lifestuff/client_impl.h"
 
 namespace maidsafe {
 namespace lifestuff {
 
 namespace {
 
-const int kRetryLimit(10);
+//const int kRetryLimit(10);
 
 }  // unnamed namespace
 

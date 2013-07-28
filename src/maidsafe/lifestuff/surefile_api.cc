@@ -13,77 +13,77 @@ implied. See the License for the specific language governing permissions and lim
 License.
 */
 
-#include "maidsafe/lifestuff/sure_file_api.h"
+#include "maidsafe/lifestuff/surefile_api.h"
 
-#include "maidsafe/lifestuff/lifestuff_impl.h"
+#include "maidsafe/lifestuff/client_impl.h"
 
 namespace maidsafe {
 namespace lifestuff {
 
   
 SureFile::SureFile(const Slots& slots)
-  : lifestuff_impl_(new LifeStuffImpl<Product::kSureFile>(slots)) {}
+  : client_impl_(new ClientImpl<Product::kSureFile>(slots)) {}
 
 SureFile::~SureFile() {}
 
 void SureFile::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
-  return lifestuff_impl_->InsertUserInput(position, characters, input_field);
+  return client_impl_->InsertUserInput(position, characters, input_field);
 }
 
 void SureFile::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
-  return lifestuff_impl_->RemoveUserInput(position, length, input_field);
+  return client_impl_->RemoveUserInput(position, length, input_field);
 }
 
 void SureFile::ClearUserInput(InputField input_field) {
-  return lifestuff_impl_->ClearUserInput(input_field);
+  return client_impl_->ClearUserInput(input_field);
 }
 
 bool SureFile::ConfirmUserInput(InputField input_field) {
-  return lifestuff_impl_->ConfirmUserInput(input_field);
+  return client_impl_->ConfirmUserInput(input_field);
 }
 
-void SureFile::CreateUser(const std::string& vault_path, ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->CreateUser(vault_path, report_progress);
+void SureFile::CreateUser(const std::string& storage_path, ReportProgressFunction& report_progress) {
+  return client_impl_->CreateUser(storage_path, report_progress);
 }
 
 void SureFile::LogIn(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->LogIn(report_progress);
+  return client_impl_->LogIn(report_progress);
 }
 
 void SureFile::LogOut() {
-  return lifestuff_impl_->LogOut();
+  return client_impl_->LogOut();
 }
 
 void SureFile::MountDrive() {
-  return lifestuff_impl_->MountDrive();
+  return client_impl_->MountDrive();
 }
 
 void SureFile::UnMountDrive() {
-  return lifestuff_impl_->UnMountDrive();
+  return client_impl_->UnMountDrive();
 }
 
 void SureFile::ChangeKeyword(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangeKeyword(report_progress);
+  return client_impl_->ChangeKeyword(report_progress);
 }
 
 void SureFile::ChangePin(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangePin(report_progress);
+  return client_impl_->ChangePin(report_progress);
 }
 
 void SureFile::ChangePassword(ReportProgressFunction& report_progress) {
-  return lifestuff_impl_->ChangePassword(report_progress);
+  return client_impl_->ChangePassword(report_progress);
 }
 
 bool SureFile::logged_in() const {
-  return lifestuff_impl_->logged_in();
+  return client_impl_->logged_in();
 }
 
 std::string SureFile::mount_path() {
-  return lifestuff_impl_->mount_path().string();
+  return client_impl_->mount_path().string();
 }
 
 std::string SureFile::owner_path() {
-  return lifestuff_impl_->owner_path().string();
+  return client_impl_->owner_path().string();
 }
 
 }  // namespace SureFile

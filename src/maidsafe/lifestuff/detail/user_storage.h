@@ -34,7 +34,7 @@ License.
 #endif
 #include "maidsafe/drive/return_codes.h"
 
-#include "maidsafe/data_store/sure_file_store.h"
+#include "maidsafe/data_store/surefile_store.h"
 
 #include "maidsafe/nfs/nfs.h"
 #include "maidsafe/nfs/client_utils.h"
