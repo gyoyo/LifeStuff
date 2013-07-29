@@ -66,7 +66,7 @@ class SureFile {
   // Recovers session details subject to validation from input keyword, pin and password, and
   // starts the appropriate vault. Refer to details in SureFile.h about ReportProgressFunction.
   // If an exception is thrown during the call, attempts cleanup then rethrows the exception.
-  void LogIn(ReportProgressFunction& report_progress);
+  void LogIn(const std::string& storage_path, ReportProgressFunction& report_progress);
   // Stops the vault associated with the session and unmounts the virtual drive where applicable.
   void LogOut();
 

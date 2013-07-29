@@ -45,8 +45,8 @@ void LifeStuff::CreateUser(const std::string& storage_path, ReportProgressFuncti
   return client_impl_->CreateUser(storage_path, report_progress);
 }
 
-void LifeStuff::LogIn(ReportProgressFunction& report_progress) {
-  return client_impl_->LogIn(report_progress);
+void LifeStuff::LogIn(const std::string& storage_path, ReportProgressFunction& report_progress) {
+  return client_impl_->LogIn(storage_path, report_progress);
 }
 
 void LifeStuff::LogOut() {

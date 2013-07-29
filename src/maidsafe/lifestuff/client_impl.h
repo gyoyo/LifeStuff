@@ -37,7 +37,7 @@ class ClientImpl {
   bool ConfirmUserInput(InputField input_field);
 
   void CreateUser(const boost::filesystem::path& storage_path, ReportProgressFunction& report_progress);
-  void LogIn(ReportProgressFunction& report_progress);
+  void LogIn(const boost::filesystem::path& storage_path, ReportProgressFunction& report_progress);
   void LogOut();
   void MountDrive();
   void UnMountDrive();
@@ -219,9 +219,10 @@ void ClientImpl<Product>::CreateUser(const boost::filesystem::path& storage_path
 }
 
 template<Product Product>
-void ClientImpl<Product>::LogIn(ReportProgressFunction& report_progress) {
+void ClientImpl<Product>::LogIn(const boost::filesystem::path& storage_path,
+                                ReportProgressFunction& report_progress) {
   FinaliseUserInput();
-  client_maid_.LogIn(*keyword_, *pin_, *password_, report_progress);
+  client_maid_.LogIn(*keyword_, *pin_, *password_, storage_path, report_progress);
   ResetInput();
   logged_in_ = true;
   return;
@@ -234,7 +235,7 @@ void ClientImpl<Product>::LogOut() {
 
 template<Product Product>
 void ClientImpl<Product>::MountDrive() {
-  client_maid_.MountDrive(session_.storage_path());
+  client_maid_.MountDrive();
 }
 
 template<Product Product>

@@ -89,7 +89,7 @@ class ClientMaid {
       fobs_confirmed = true;
       PutPaidFobs();
       session_.set_unique_user_id(Identity(RandomAlphaNumericString(64)));
-      MountDrive(storage_path);
+      MountDrive();
       drive_mounted = true;
       UnMountDrive();
       drive_mounted = false;
@@ -108,6 +108,7 @@ class ClientMaid {
   void LogIn(const Keyword& keyword,
              const Pin& pin,
              const Password& password,
+             const boost::filesystem::path& /*storage_path*/,
              ReportProgressFunction& report_progress) {
     try {
       Anmaid anmaid;
@@ -141,7 +142,7 @@ class ClientMaid {
     UnMountDrive();
   }
 
-  void MountDrive(const boost::filesystem::path&) {
+  void MountDrive() {
     user_storage_.MountDrive(*storage_, session_);
     return;
   }
@@ -407,6 +408,10 @@ class ClientMaid<Product::kSureFile> {
     session_.set_initialised();
     session_.set_storage_path(storage_path);
     report_progress(kCreateUser, kStoringUserCredentials);
+    DiskUsage disk_usage(10995116277760);  // arbitrary 10GB
+    storage_.reset(new Storage(storage_path, disk_usage));
+    session_.set_max_space(disk_usage.data);
+    user_storage_.MountDrive(*storage_, session_);
     PutSession(keyword, pin, password);
     session_.set_keyword_pin_password(keyword, pin, password);
     return;
@@ -415,27 +420,28 @@ class ClientMaid<Product::kSureFile> {
   void LogIn(const Keyword& keyword,
              const Pin& pin,
              const Password& password,
+             const boost::filesystem::path& storage_path,
              ReportProgressFunction& report_progress) {
     report_progress(kLogin, kRetrievingUserCredentials);
-    GetSession(keyword, pin, password);
-    session_.set_keyword_pin_password(keyword, pin, password);
-    return;
-  }
-
-  void LogOut() {
-    UnMountDrive();
-    return;
-  }
-
-  void MountDrive(const boost::filesystem::path& storage_path) {
     DiskUsage disk_usage(10995116277760);  // arbitrary 10GB
     storage_.reset(new Storage(storage_path, disk_usage));
+    GetSession(keyword, pin, password);
+    session_.set_keyword_pin_password(keyword, pin, password);
     user_storage_.MountDrive(*storage_, session_);
     return;
   }
 
-  void UnMountDrive() {
+  void LogOut() {
     user_storage_.UnMountDrive(session_);
+    PutSession(session_.keyword(), session_.pin(), session_.password());
+    return;
+  }
+
+  void MountDrive() {   
+    return;
+  }
+
+  void UnMountDrive() {
     return;
   }
 

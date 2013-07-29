@@ -78,6 +78,24 @@ endif()
 
 ms_add_static_library(lifestuff ${LifestuffAllFiles})
 
+set(SureFileDemo ${LifestuffSourcesDir}/surefile_demo.cc)
+
+if(WIN32)
+  if(Cbfs_FOUND)
+    list(REMOVE_ITEM LifestuffAllFiles ${SureFileDemo})
+  else()
+    list(REMOVE_ITEM LifestuffAllFiles ${SureFileDemo})
+  endif()
+else()
+  list(REMOVE_ITEM LifestuffAllFiles ${SureFileDemo})
+endif()
+
+if(MaidsafeTesting AND (Cbfs_FOUND OR NOT WIN32))
+  ms_add_executable(surefile_demo Tools ${SureFileDemo})
+  target_link_libraries(surefile_demo maidsafe_lifestuff)
+  add_definitions(-DCBFS_KEY=${Cbfs_KEY} -DHAVE_CBFS)
+endif()
+
 if(MaidsafeTesting)
   target_link_libraries(TESTlifestuff_user_input maidsafe_lifestuff ${BoostRegexLibs})
 endif()
