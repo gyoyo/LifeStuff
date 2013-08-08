@@ -84,7 +84,7 @@ class LifeStuffPython {
                                                       ls::ProgressCode progresscode) {
                                     this->ProgressCB(action, progresscode, py_callback);
                                   });
-    lifestuff_.LogIn(cb);
+  // TODO FIXME (dirvine)  lifestuff_.LogIn(cb);
   }
   void LogOut() { lifestuff_.LogOut(); }
 

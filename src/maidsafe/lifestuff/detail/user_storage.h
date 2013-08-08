@@ -61,7 +61,10 @@ struct Drive {
 typedef drive::DummyWinDriveInUserSpace MaidDrive;
 #  endif
 #else
-typedef drive::FuseDriveInUserSpace MaidDrive;
+template<typename Storage>
+struct Drive {
+typedef drive::FuseDriveInUserSpace<Storage> MaidDrive;
+};
 #endif
 
 template<typename Storage>
@@ -142,7 +145,7 @@ void UserStorage<Storage>::MountDrive(Storage& storage, Session& session) {
                   << error_code.message();
     }
   }
-  drive_.reset(new MaidDrive(storage,
+  drive_.reset(new     Drive(storage,
                              session.passport().Get<Maid>(true),
                              session.unique_user_id(),
                              session.root_parent_id(),

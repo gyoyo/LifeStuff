@@ -12,8 +12,9 @@ distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e
 implied. See the License for the specific language governing permissions and limitations under the
 License.
 */
-
+#ifdef WIN32
 #include <conio.h>
+#endif
 
 #include <functional>
 #include <iostream>  // NOLINT
@@ -37,8 +38,10 @@ License.
 
 #include "maidsafe/lifestuff/surefile_api.h"
 
+#ifdef WIN32
 #ifndef CBFS_KEY
 #  error CBFS_KEY must be defined.
+#endif
 #endif
 
 namespace fs = boost::filesystem;
@@ -47,7 +50,7 @@ namespace po = boost::program_options;
 typedef maidsafe::passport::detail::Keyword Keyword;
 typedef maidsafe::passport::detail::Pin Pin;
 typedef maidsafe::passport::detail::Password Password;
-  
+
 namespace maidsafe {
 namespace lifestuff {
 
@@ -60,13 +63,13 @@ int Init(const fs::path &/*mount_directory*/,
          const Password& password) {
   UpdateAvailableFunction update_available([](const std::string&) {});
   OperationsPendingFunction operations_pending([](bool) {});
-  
+
   Slots slots;
   slots.update_available = update_available;
   slots.operations_pending = operations_pending;
 
   SureFilePtr surefile(new SureFile(slots));
-  
+
   ReportProgressFunction report_progress([](Action, ProgressCode) {});
 
 //  surefile->InsertUserInput(0, std::string(keyword.string().begin(), keyword.string().end()), kKeyword);
@@ -88,8 +91,12 @@ int Init(const fs::path &/*mount_directory*/,
     LOG(kError) << "User creation/login failed.";
     return 1;
   }
-
+#ifdef WIN32
   while(!kbhit());
+#else
+  int value(0);
+  std::cin >> value;
+#endif
   surefile->LogOut();
   return 0;
 }

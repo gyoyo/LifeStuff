@@ -73,14 +73,14 @@ class ClientMaid {
     try {
       report_progress(kCreateUser, kCreatingUserCredentials);
       session_.passport().CreateFobs();
-      Maid maid(session_.passport().Get<Maid>(false));
+      Maid maid(session_.passport().template Get<Maid>(false));
       report_progress(kCreateUser, kJoiningNetwork);
       JoinNetwork(maid);
       PutFreeFobs();
       report_progress(kCreateUser, kInitialisingClientComponents);
       storage_.reset(new Storage(routing_handler_->routing(), maid));
       report_progress(kCreateUser, kCreatingVault);
-      Pmid pmid(session_.passport().Get<Pmid>(false));
+      Pmid pmid(session_.passport().template Get<Pmid>(false));
       session_.set_storage_path(storage_path);
       client_controller_->StartVault(pmid, maid.name(), storage_path);
       RegisterPmid(maid, pmid);
@@ -119,8 +119,8 @@ class ClientMaid {
       storage_.reset(new Storage(routing_handler_->routing(), maid));
       report_progress(kLogin, kRetrievingUserCredentials);
       GetSession(keyword, pin, password);
-      maid = session_.passport().Get<Maid>(true);
-      Pmid pmid(session_.passport().Get<Pmid>(true));
+      maid = session_.passport().template Get<Maid>(true);
+      Pmid pmid(session_.passport().template Get<Pmid>(true));
       report_progress(kLogin, kJoiningNetwork);
       JoinNetwork(maid);
       report_progress(kLogin, kInitialisingClientComponents);
@@ -210,11 +210,11 @@ class ClientMaid {
     NonEmptyString serialised_session(session_.Serialise());
     passport::EncryptedSession encrypted_session(passport::EncryptSession(
                                                     keyword, pin, password, serialised_session));
-    Tmid tmid(encrypted_session, session_.passport().Get<Antmid>(true));
+    Tmid tmid(encrypted_session, session_.passport().template Get<Antmid>(true));
     passport::EncryptedTmidName encrypted_tmid_name(passport::EncryptTmidName(
                                                       keyword, pin, tmid.name()));
     Mid::name_type mid_name(passport::MidName(keyword, pin));
-    Mid mid(mid_name, encrypted_tmid_name, session_.passport().Get<Anmid>(true));
+    Mid mid(mid_name, encrypted_tmid_name, session_.passport().template Get<Anmid>(true));
     PutFob<Tmid>(tmid);
     PutFob<Mid>(mid);
   }
@@ -284,8 +284,8 @@ class ClientMaid {
 
   void UnCreateUser(bool fobs_confirmed, bool drive_mounted) {
     if (fobs_confirmed) {
-      Maid maid(session_.passport().Get<Maid>(fobs_confirmed));
-      Pmid pmid(session_.passport().Get<Pmid>(fobs_confirmed));
+      Maid maid(session_.passport().template Get<Maid>(fobs_confirmed));
+      Pmid pmid(session_.passport().template Get<Pmid>(fobs_confirmed));
       UnregisterPmid(maid, pmid);
     }
     // client_controller_->StopVault(); get params!!!!!!!!!
@@ -302,7 +302,7 @@ class ClientMaid {
                             ThrowError(LifeStuffErrors::kStoreFailure);
                           }
                         });
-    passport::Pmid::name_type pmid_name(session_.passport().Get<Pmid>(true).name());
+    passport::Pmid::name_type pmid_name(session_.passport().template Get<Pmid>(true).name());
     maidsafe::nfs::Put<Fob>(*storage_, fob, pmid_name, 3, reply);
     return;
   }
@@ -437,7 +437,7 @@ class ClientMaid<Product::kSureFile> {
     return;
   }
 
-  void MountDrive() {   
+  void MountDrive() {
     return;
   }
 
