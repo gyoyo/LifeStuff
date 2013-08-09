@@ -90,9 +90,9 @@ else()
   list(REMOVE_ITEM LifestuffAllFiles ${SureFileDemo})
 endif()
 
-if(MaidsafeTesting AND (Cbfs_FOUND OR NOT WIN32))
+if(Cbfs_FOUND OR NOT WIN32)
   ms_add_executable(surefile_demo Tools ${SureFileDemo})
-  target_link_libraries(surefile_demo maidsafe_lifestuff)
+  target_link_libraries(surefile_demo maidsafe_private maidsafe_lifestuff_detail maidsafe_lifestuff_manager maidsafe_lifestuff)
   add_definitions(-DCBFS_KEY=${Cbfs_KEY} -DHAVE_CBFS)
 endif()
 
