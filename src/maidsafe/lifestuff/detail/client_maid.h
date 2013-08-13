@@ -94,8 +94,8 @@ class ClientMaid {
   void UnCreateUser(bool fobs_confirmed, bool drive_mounted);
 
   template<typename Fob> void PutFob(const Fob& fob);
-  template<typename Fob> void DeleteFob(const typename Fob::name_type& fob);
-  template<typename Fob> Fob GetFob(const typename Fob::name_type& fob);
+  template<typename Fob> void DeleteFob(const typename Fob::Name& fob);
+  template<typename Fob> Fob GetFob(const typename Fob::Name& fob);
 
   void PutFreeFobs();
   void PutPaidFobs();
