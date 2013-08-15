@@ -151,7 +151,9 @@ export(TARGETS maidsafe_lifestuff
                maidsafe_lifestuff_detail
                maidsafe_lifestuff_manager
                maidsafe_vault
-               maidsafe_nfs
+               maidsafe_nfs_core
+               maidsafe_nfs_client
+               maidsafe_nfs_vault
                maidsafe_routing
                maidsafe_rudp
                maidsafe_drive
