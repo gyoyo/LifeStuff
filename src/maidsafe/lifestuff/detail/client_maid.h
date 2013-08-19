@@ -213,28 +213,28 @@ class ClientMaid {
     Tmid tmid(encrypted_session, session_.passport().template Get<Antmid>(true));
     passport::EncryptedTmidName encrypted_tmid_name(passport::EncryptTmidName(
                                                       keyword, pin, tmid.name()));
-    Mid::name_type mid_name(passport::MidName(keyword, pin));
+    Mid::Name mid_name(passport::MidName(keyword, pin));
     Mid mid(mid_name, encrypted_tmid_name, session_.passport().template Get<Anmid>(true));
     PutFob<Tmid>(tmid);
     PutFob<Mid>(mid);
   }
 
   void DeleteSession(const Keyword& keyword, const Pin& pin) {
-    Mid::name_type mid_name(Mid::GenerateName(keyword, pin));
+    Mid::Name mid_name(Mid::GenerateName(keyword, pin));
     auto mid_future(maidsafe::nfs::Get<Mid>(*storage_, mid_name));
     Mid mid(*mid_future.get());
     passport::EncryptedTmidName encrypted_tmid_name(mid.encrypted_tmid_name());
-    Tmid::name_type tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
+    Tmid::Name tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
     DeleteFob<Tmid>(tmid_name);
     DeleteFob<Mid>(mid_name);
   }
 
   void GetSession(const Keyword& keyword, const Pin& pin, const Password& password) {
-    Mid::name_type mid_name(Mid::GenerateName(keyword, pin));
+    Mid::Name mid_name(Mid::GenerateName(keyword, pin));
     auto mid_future(maidsafe::nfs::Get<Mid>(*storage_, mid_name));
     Mid mid(*mid_future.get());
     passport::EncryptedTmidName encrypted_tmid_name(mid.encrypted_tmid_name());
-    Tmid::name_type tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
+    Tmid::Name tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
     auto tmid_future(maidsafe::nfs::Get<Tmid>(*storage_, tmid_name));
     Tmid tmid(*tmid_future.get());
     passport::EncryptedSession encrypted_session(tmid.encrypted_session());
@@ -302,13 +302,13 @@ class ClientMaid {
                             ThrowError(LifeStuffErrors::kStoreFailure);
                           }
                         });
-    passport::Pmid::name_type pmid_name(session_.passport().template Get<Pmid>(true).name());
+    passport::Pmid::Name pmid_name(session_.passport().template Get<Pmid>(true).name());
     maidsafe::nfs::Put<Fob>(*storage_, fob, pmid_name, 3, reply);
     return;
   }
 
   template<typename Fob>
-  void DeleteFob(const typename Fob::name_type& fob_name) {
+  void DeleteFob(const typename Fob::Name& fob_name) {
     ReplyFunction reply([this] (maidsafe::nfs::Reply reply) {
                           if (!reply.IsSuccess()) {
                             ThrowError(LifeStuffErrors::kDeleteFailure);
@@ -319,7 +319,7 @@ class ClientMaid {
   }
 
   template<typename Fob>
-  Fob GetFob(const typename Fob::name_type& fob_name) {
+  Fob GetFob(const typename Fob::Name& fob_name) {
     std::future<Fob> fob_future(maidsafe::nfs::Get<Fob>(*storage_, fob_name));
     return fob_future.get();
   }
@@ -347,7 +347,7 @@ class ClientMaid {
   void PublicKeyRequest(const NodeId& node_id, const GivePublicKeyFunctor& give_key) {
     if (storage_) {
       typedef passport::PublicPmid PublicPmid;
-      PublicPmid::name_type pmid_name(Identity(node_id.string()));
+      PublicPmid::Name pmid_name(Identity(node_id.string()));
       auto pmid_future(maidsafe::nfs::Get<PublicPmid>(*storage_, pmid_name));
       give_key(pmid_future.get()->public_key());
     } else {
@@ -503,7 +503,7 @@ class ClientMaid<Product::kSureFile> {
     Tmid tmid(encrypted_session, session_.passport().Get<Antmid>(true));
     passport::EncryptedTmidName encrypted_tmid_name(passport::EncryptTmidName(
                                                       keyword, pin, tmid.name()));
-    Mid::name_type mid_name(passport::MidName(keyword, pin));
+    Mid::Name mid_name(passport::MidName(keyword, pin));
     Mid mid(mid_name, encrypted_tmid_name, session_.passport().Get<Anmid>(true));
     storage_->Put(tmid.name(), tmid.Serialise());
     storage_->Put(mid_name, mid.Serialise());
@@ -511,22 +511,22 @@ class ClientMaid<Product::kSureFile> {
   }
 
   void DeleteSession(const Keyword& keyword, const Pin& pin) {
-    Mid::name_type mid_name(Mid::GenerateName(keyword, pin));
+    Mid::Name mid_name(Mid::GenerateName(keyword, pin));
     NonEmptyString serialised_mid = storage_->Get(mid_name);
     Mid mid(mid_name, Mid::serialised_type(serialised_mid));
     passport::EncryptedTmidName encrypted_tmid_name(mid.encrypted_tmid_name());
-    Tmid::name_type tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
+    Tmid::Name tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
     storage_->Delete(tmid_name);
     storage_->Delete(mid_name);
     return;
   }
 
   void GetSession(const Keyword& keyword, const Pin& pin, const Password& password) {
-    Mid::name_type mid_name(passport::Mid::GenerateName(keyword, pin));
+    Mid::Name mid_name(passport::Mid::GenerateName(keyword, pin));
     NonEmptyString serialised_mid = storage_->Get(mid_name);
     Mid mid(mid_name, passport::Mid::serialised_type(serialised_mid));
     passport::EncryptedTmidName encrypted_tmid_name(mid.encrypted_tmid_name());
-    Tmid::name_type tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
+    Tmid::Name tmid_name(passport::DecryptTmidName(keyword, pin, encrypted_tmid_name));
     NonEmptyString serialised_tmid(storage_->Get(tmid_name));
     Tmid tmid(tmid_name, Tmid::serialised_type(serialised_tmid));
     passport::EncryptedSession encrypted_session(tmid.encrypted_session());
