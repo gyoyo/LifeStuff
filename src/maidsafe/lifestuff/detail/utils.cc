@@ -31,7 +31,7 @@ namespace detail {
     typedef passport::PublicPmid PublicPmid;
 
     void operator()(ClientNfs& client_nfs, Passport& passport, ReplyFunction& reply) {
-      Pmid::name_type pmid_name(passport.Get<Pmid>(false).name());
+      Pmid::Name pmid_name(passport.Get<Pmid>(false).name());
       PublicAnmaid public_anmaid(passport.Get<Anmaid>(false));
       PublicMaid public_maid(passport.Get<Maid>(false));
       PublicPmid public_pmid(passport.Get<Pmid>(false));
@@ -55,7 +55,7 @@ namespace detail {
     typedef passport::Pmid Pmid;
 
     void operator()(ClientNfs& client_nfs, Passport& passport, ReplyFunction& reply) {
-      Pmid::name_type pmid_name(passport.Get<Pmid>(true).name());
+      Pmid::Name pmid_name(passport.Get<Pmid>(true).name());
       PublicAnmid public_anmid(passport.Get<Anmid>(true));
       PublicAnsmid public_ansmid(passport.Get<Ansmid>(true));
       PublicAntmid public_antmid(passport.Get<Antmid>(true));

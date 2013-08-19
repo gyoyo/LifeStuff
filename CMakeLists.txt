@@ -169,7 +169,9 @@ export(TARGETS maidsafe_lifestuff
                maidsafe_lifestuff_detail
                maidsafe_lifestuff_manager
                maidsafe_vault
-               maidsafe_nfs
+               maidsafe_nfs_core
+               maidsafe_nfs_client
+               maidsafe_nfs_vault
                maidsafe_routing
                maidsafe_rudp
                maidsafe_drive
@@ -201,47 +203,25 @@ endif()
 
 
 #==================================================================================================#
-# Write LifeStuff paths into WPF UI's CustomProperties.props file                                  #
+# Export LifeStuff Dependency paths for UI projects                                                #
 #==================================================================================================#
-if(WIN32 AND UI_WPF_ROOT_DIR)
-  cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
-  unset(UiWpfProps CACHE)
-  find_file(UiWpfProps NAMES CustomProperties.props
-              PATHS ${UI_WPF_ROOT_DIR}/Native.LifeStuff.Wrapper
-              DOC "Path to LifeStuff-UI-Windows CustomProperties.props file."]
-              NO_DEFAULT_PATH)
-  if(UiWpfProps)
-    file(READ ${UiWpfProps} PropsContents)
-    get_dependencies(maidsafe_lifestuff OptimizedDependencies DebugDependencies)
-    get_target_property(ReleaseLocation maidsafe_lifestuff LOCATION_RELEASE)
-    get_target_property(DebugLocation maidsafe_lifestuff LOCATION_DEBUG)
-    list(INSERT OptimizedDependencies 0 "\"${ReleaseLocation}\"")
-    list(INSERT DebugDependencies 0 "\"${DebugLocation}\"")
-    string(REPLACE "/" "\\\\" OptimizedDependencies "${OptimizedDependencies}")
-    string(REPLACE "/" "\\\\" DebugDependencies "${DebugDependencies}")
-    string(REPLACE "/" "\\\\" IncludesPath "\"${PROJECT_SOURCE_DIR}/include\"")
-    if(${TargetArchitecture} STREQUAL "x86_64")
-      set(Arch x64)
-    elseif(${TargetArchitecture} STREQUAL "i386")
-      set(Arch x86)
-    else()
-      message(FATAL_ERROR "\nUnknown target architecture.  Should be \"x86_64\" or \"i386\" but is \"${TargetArchitecture}\"")
-    endif()
-    string(REGEX REPLACE "<NativeLibs${Arch}Debug>[^<]*</NativeLibs${Arch}Debug>" "<NativeLibs${Arch}Debug>${DebugDependencies}</NativeLibs${Arch}Debug>" PropsContents "${PropsContents}")
-    string(REGEX REPLACE "<NativeLibs${Arch}Release>[^<]*</NativeLibs${Arch}Release>" "<NativeLibs${Arch}Release>${OptimizedDependencies}</NativeLibs${Arch}Release>" PropsContents "${PropsContents}")
-    string(REGEX REPLACE "<NativeIncludes>[^<]*</NativeIncludes>" "<NativeIncludes>${IncludesPath}</NativeIncludes>" PropsContents "${PropsContents}")
-    # Don't always overwrite the original file; use a temp copy and 'configure_file' to avoid copying if they're the same
-    set(TempCopyUiWpfProps ${CMAKE_BINARY_DIR}/UI-Windows-CustomProperties.props)
-    file(WRITE ${TempCopyUiWpfProps} "${PropsContents}")
-    configure_file(${TempCopyUiWpfProps} ${UiWpfProps} COPYONLY)
+if(WIN32)
+  set(WPFExportFile ${CMAKE_BINARY_DIR}/maidsafe_wpf_export.cmake)
+  file(WRITE ${WPFExportFile} "set(NativeIncludes ${PROJECT_SOURCE_DIR}/include)\n")
+  get_dependencies(maidsafe_lifestuff OptimizedDependencies DebugDependencies OFF)
+  get_target_property(ReleaseLocation maidsafe_lifestuff LOCATION_RELEASE)
+  get_target_property(DebugLocation maidsafe_lifestuff LOCATION_DEBUG)
+  list(INSERT OptimizedDependencies 0 "\"${ReleaseLocation}\"")
+  list(INSERT DebugDependencies 0 "\"${DebugLocation}\"")
+  if(${TargetArchitecture} STREQUAL "x86_64")
+    set(Arch x64)
+  elseif(${TargetArchitecture} STREQUAL "i386")
+    set(Arch x86)
   else()
-    set(WarningMessage "\nUI_WPF_ROOT_DIR has been specified as \"${UI_WPF_ROOT_DIR}\", but ")
-    set(WarningMessage "${WarningMessage}${UI_WPF_ROOT_DIR}\\Native.LifeStuff.Wrapper\\CustomProperties.props ")
-    set(WarningMessage "${WarningMessage}doesn't exist.\nEither pass the correct path using\n  cmake . ")
-    set(WarningMessage "${WarningMessage}-DUI_WPF_ROOT_DIR=\"<Path to LifeStuff-UI-Windows root directory>\"\n")
-    set(WarningMessage "${WarningMessage}or unset UI_WPF_ROOT_DIR in the cache using\n  cmake . -UUI_WPF_ROOT_DIR")
-    message(WARNING "${WarningMessage}")
+    message(FATAL_ERROR "\nUnknown target architecture.  Should be \"x86_64\" or \"i386\" but is \"${TargetArchitecture}\"")
   endif()
+  file(APPEND ${WPFExportFile} "set(NativeLibs${Arch}Debug ${DebugDependencies})\n")
+  file(APPEND ${WPFExportFile} "set(NativeLibs${Arch}Release ${OptimizedDependencies})")
 endif()
 
 

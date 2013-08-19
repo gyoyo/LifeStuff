@@ -18,7 +18,5 @@ License.
 namespace maidsafe {
 namespace lifestuff {
 
-
-
 }  // lifestuff
 }  // maidsafe
