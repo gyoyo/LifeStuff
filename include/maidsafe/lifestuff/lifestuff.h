@@ -23,14 +23,6 @@ License.
 namespace maidsafe {
 namespace lifestuff {
 
-// Type that determines which product we're building.
-enum class Product : int {
-  kLifeStuff,
-  kSureFile
-};
-
-template<Product Product> class ClientImpl;
-
 // Type passed to user input functions in LifeStuff class to determine which variable(s) to
 // process.
 enum InputField {
@@ -88,6 +80,8 @@ typedef std::function<void(Action, ProgressCode)> ReportProgressFunction;
 // Some internally used constants.
 const std::string kAppHomeDirectory(".lifestuff");
 const std::string kOwner("Owner");
+const char kCharRegex[] = ".*";
+const char kDigitRegex[] = "\\d";
 
 }  // namespace lifestuff
 }  // namespace maidsafe

@@ -89,7 +89,7 @@ class LifeStuff {
   std::string owner_path();
 
  private:
-  std::unique_ptr<ClientImpl<Product::kLifeStuff>> client_impl_;
+  std::unique_ptr<ClientImpl<ClientData>> client_impl_;
 };
 
 }  // namespace lifestuff
