@@ -65,12 +65,19 @@ typedef std::function<void(const std::string&)> UpdateAvailableFunction;
 typedef std::function<void(int32_t)> NetworkHealthFunction;
 // Safe to quit.
 typedef std::function<void(bool)> OperationsPendingFunction;
+// Config file parsing error.
+typedef std::function<void()> ConfigurationErrorFunction;
+// Associate storage location with drive directory.
+typedef std::function<void(const std::string&)> OnServiceAddedFunction;
+
 
 // Slots are used to provide useful information back to the client application.
 struct Slots {
   UpdateAvailableFunction update_available;
   NetworkHealthFunction network_health;
   OperationsPendingFunction operations_pending;
+  ConfigurationErrorFunction configuration_error;
+  OnServiceAddedFunction on_service_added;
 };
 
 // Some methods may take some time to complete, e.g. Login. The ReportProgressFunction is used to
