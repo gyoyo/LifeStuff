@@ -21,7 +21,7 @@ message PassportData {
 
 message UserData {
   required bytes unique_user_id = 1;
-  required bytes root_parent_id = 2;
+  required bytes drive_root_id = 2;
   required bytes storage_path = 3;
   required int64 max_space = 4;
   required int64 used_space = 5;

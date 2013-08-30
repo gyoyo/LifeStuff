@@ -16,7 +16,7 @@ License.
 #ifndef MAIDSAFE_LIFESTUFF_DETAIL_CLIENT_MAID_H_
 #define MAIDSAFE_LIFESTUFF_DETAIL_CLIENT_MAID_H_
 
-#include "maidsafe/data_store/surefile_store.h"
+#include "maidsafe/data_store/sure_file_store.h"
 
 #include "maidsafe/routing/routing_api.h"
 

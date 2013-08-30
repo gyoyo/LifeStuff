@@ -47,14 +47,14 @@ void UserStorage::MountDrive(Storage& storage, Session& session) {
   mount_path_ = drive_name;
   drive_.reset(new Drive(storage,
                          session.unique_user_id(),
-                         session.root_parent_id(),
+                         session.drive_root_id(),
                          mount_path_,
                          kDriveLogo.string(),
                          session.max_space(),
                          session.used_space()));
   mount_status_ = true;
-  if (session.root_parent_id() != drive_->root_parent_id())
-    session.set_root_parent_id(drive_->root_parent_id());
+  if (session.drive_root_id() != drive_->drive_root_id())
+    session.set_drive_root_id(drive_->drive_root_id());
 #else
   boost::system::error_code error_code;
   if (!boost::filesystem::exists(mount_path_)) {
@@ -67,7 +67,7 @@ void UserStorage::MountDrive(Storage& storage, Session& session) {
   drive_.reset(new     Drive(storage,
                              session.passport().Get<Maid>(true),
                              session.unique_user_id(),
-                             session.root_parent_id(),
+                             session.drive_root_id(),
                              mount_path_,
                              kDriveLogo.string(),
                              session.max_space(),
