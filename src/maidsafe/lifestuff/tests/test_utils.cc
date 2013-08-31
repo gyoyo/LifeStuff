@@ -194,53 +194,6 @@ fs::path CreateDirectoryContainingFiles(fs::path const& path) {
   }
 }
 
-bool RemoveDirectories(fs::path const& path) {
-  LOG(kInfo) << "RemoveDirectories: " << path;
-  boost::system::error_code error_code;
-  fs::directory_iterator begin(path), end;
-  try {
-    for (; begin != end; ++begin) {
-      if (fs::is_directory(*begin)) {
-        EXPECT_TRUE(RemoveDirectories((*begin).path()));
-        EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-        if (error_code.value() != 0) {
-          // try again...
-          EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-          if (error_code.value() != 0) {
-            LOG(kError) << "Failed to remove " << (*begin).path();
-            return false;
-          }
-        }
-      } else if (fs::is_regular_file(*begin)) {
-        EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-        if (error_code.value() != 0) {
-          // may as well...
-          EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-          if (error_code.value() != 0) {
-            LOG(kError) << "Failed to remove " << (*begin).path();
-            return false;
-          }
-        }
-      } else {
-        // try removing it anyway...
-        EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-        if (error_code.value() != 0) {
-          // and again...
-          EXPECT_TRUE(fs::remove((*begin).path(), error_code));
-          if (error_code.value() != 0) {
-            LOG(kError) << "Failed to remove " << (*begin).path();
-            return false;
-          }
-        }
-      }
-    }
-  } catch(...) {
-    LOG(kError) << "RemoveDirectories: Failed";
-    return false;
-  }
-  return true;
-}
-
 bool CopyDirectories(fs::path const& from, fs::path const& to) {
   LOG(kInfo) << "CopyDirectories: from " << from << " to " << (to / from.filename());
 

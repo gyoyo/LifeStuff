@@ -174,14 +174,6 @@ struct SlotsExtractor {
   }
 };
 
-#ifdef __GNUC__
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Weffc++"
-#endif
-#ifdef __GNUC__
-#  pragma GCC diagnostic pop
-#endif
-
 }  // namespace
 
 BOOST_PYTHON_MODULE(lifestuff_python_api) {

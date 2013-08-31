@@ -33,18 +33,7 @@ void UserStorage::MountDrive(Storage& storage, Session& session) {
   if (mount_status_)
     return;
 #ifdef WIN32
-  std::uint32_t drive_letters, mask = 0x4, count = 2;
-  drive_letters = GetLogicalDrives();
-  while ((drive_letters & mask) != 0) {
-    mask <<= 1;
-    ++count;
-  }
-  if (count > 25) {
-    LOG(kError) << "No available drive letters.";
-    return;
-  }
-  char drive_name[3] = {'A' + static_cast<char>(count), ':', '\0'};
-  mount_path_ = drive_name;
+  mount_path_ = drive::GetNextAvailableDrivePath();
   drive_.reset(new Drive(storage,
                          session.unique_user_id(),
                          session.drive_root_id(),
@@ -82,19 +71,14 @@ void UserStorage::MountDrive(Storage& storage, Session& session) {
 void UserStorage::UnMountDrive(Session& session) {
   if (!mount_status_)
     return;
-  int64_t max_space(0), used_space(0);
-#ifdef WIN32
-  drive_->Unmount(max_space, used_space);
-#else
-  drive_->Unmount(max_space, used_space);
+  drive_->Unmount();
+#ifndef WIN32
   drive_->WaitUntilUnMounted();
   mount_thread_.join();
   boost::system::error_code error_code;
   boost::filesystem::remove_all(mount_path_, error_code);
 #endif
   mount_status_ = false;
-  session.set_max_space(max_space);
-  session.set_used_space(used_space);
 }
 
 boost::filesystem::path UserStorage::mount_path() {

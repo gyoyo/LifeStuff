@@ -43,7 +43,6 @@ fs::path CreateTestDirectory(fs::path const& parent);
 fs::path CreateTestDirectoriesAndFiles(fs::path const& parent);
 fs::path CreateEmptyFile(fs::path const& path);
 fs::path CreateDirectoryContainingFiles(fs::path const& path);
-bool RemoveDirectories(fs::path const& path);
 bool CopyDirectories(fs::path const& from, fs::path const& to);
 bool CompareDirectoryEntries(fs::path const& drive_path, fs::path const& disk_path);
 bool CompareFileContents(fs::path const& path1, fs::path const& path2);
