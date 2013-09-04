@@ -216,7 +216,6 @@ endif()
 #==================================================================================================#
 if(MaidsafeTesting)
   add_style_test()
-  label_as_critical_tests()
   add_project_experimental()
   add_dependencies(AllLifestuff lifestuff_python_api)
   test_summary_output()
