@@ -226,3 +226,11 @@ if(MaidsafeTesting)
   add_dependencies(AllLifestuff lifestuff_python_api)
   test_summary_output()
 endif()
+
+# temporarily removing lifestuff targets from "all" target. FIXME BEFORE_RELEASE
+set_target_properties(maidsafe_lifestuff AllLifestuff maidsafe_lifestuff_detail lifestuff_python_api ExperLifestuff
+                        PROPERTIES EXCLUDE_FROM_ALL ON EXCLUDE_FROM_DEFAULT_BUILD ON)
+if(MaidsafeTesting)
+  set_target_properties(TESTlifestuff_user_storage TESTlifestuff_user_input
+                          PROPERTIES EXCLUDE_FROM_ALL ON EXCLUDE_FROM_DEFAULT_BUILD ON)
+endif()
