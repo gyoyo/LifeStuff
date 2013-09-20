@@ -71,7 +71,7 @@ typedef std::function<void(bool)> OperationsPendingFunction;
 // Config file parsing error.
 typedef std::function<void()> ConfigurationErrorFunction;
 // Associate storage location with drive directory.
-typedef std::function<void(const std::string&)> OnServiceAddedFunction;
+typedef std::function<void()> OnServiceAddedFunction;
 
 
 // Slots are used to provide useful information back to the client application.

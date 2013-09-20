@@ -49,6 +49,7 @@ class RoutingHandler {
   void Join(const EndPointVector& endpoints);
 
   Routing& routing();
+  AsioService& asio_service();
 
  private:
   RoutingHandler(const RoutingHandler&);

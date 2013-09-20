@@ -19,26 +19,12 @@
 #ifndef MAIDSAFE_LIFESTUFF_DETAIL_UTILS_H_
 #define MAIDSAFE_LIFESTUFF_DETAIL_UTILS_H_
 
-#include "maidsafe/passport/passport.h"
 #include "maidsafe/lifestuff/detail/session.h"
 
 namespace maidsafe {
 namespace lifestuff {
 
-// typedef std::function<void(maidsafe::nfs::Reply)> ReplyFunction;
-
-struct Free;
-struct Paid;
-
 namespace detail {
-
-  template <typename Duty>
-  struct PutFobs {
-    typedef maidsafe::nfs::ClientMaidNfs ClientNfs;
-    typedef passport::Passport Passport;
-
-    void operator()(ClientNfs&, Passport&/*, ReplyFunction&*/) {}
-  };
 
   template <typename Input>
   struct InsertUserInput {

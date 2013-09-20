@@ -42,9 +42,11 @@ class UserInputTest : public testing::Test {
     UpdateAvailableFunction update_available([](const std::string&) {});
     NetworkHealthFunction network_health([](int32_t) {});
     OperationsPendingFunction operations_pending([](bool) {});
+    OnServiceAddedFunction on_service_added([]() {});
     slots.update_available = update_available;
     slots.network_health = network_health;
     slots.operations_pending = operations_pending;
+    slots.on_service_added = on_service_added;
     lifestuff_.reset(new LifeStuff(slots));
   }
 

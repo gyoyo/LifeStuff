@@ -35,7 +35,6 @@
 #else
 #  include "maidsafe/drive/unix_drive.h"
 #endif
-#include "maidsafe/drive/return_codes.h"
 
 #include "maidsafe/data_store/sure_file_store.h"
 
@@ -70,15 +69,16 @@ typedef drive::FuseDriveInUserSpace<Storage> MaidDrive;
 class UserStorage {
  public:
 
-  typedef data_store::SureFileStore Storage;  // TODO() change to lifestuff's storage type.
-  typedef typename Drive<Storage>::MaidDrive Drive;
+  typedef nfs_client::MaidNodeNfs Storage;
+  typedef std::shared_ptr<Storage> StoragePtr;
+  typedef Drive<Storage>::MaidDrive Drive;
   typedef passport::Maid Maid;
 
   explicit UserStorage();
   ~UserStorage() {}
 
-  void MountDrive(Storage& storage, Session& session);
-  void UnMountDrive(Session& session);
+  void MountDrive(StoragePtr storage, Session& session, OnServiceAddedFunction on_service_added);
+  void UnMountDrive();
 
   boost::filesystem::path mount_path();
   boost::filesystem::path owner_path();

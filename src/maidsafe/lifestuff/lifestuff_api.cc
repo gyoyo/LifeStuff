@@ -23,16 +23,8 @@
 namespace maidsafe {
 namespace lifestuff {
 
-struct ClientData {
-  typedef int Storage;
-  std::unique_ptr<Keyword> keyword_, confirmation_keyword_;
-  std::unique_ptr<Pin> pin_, confirmation_pin_;
-  std::unique_ptr<Password> password_, confirmation_password_, current_password_;
-  ClientMpid client_mpid_;
-};
-
 LifeStuff::LifeStuff(const Slots& slots)
-  : client_impl_(new ClientImpl<ClientData>(slots)) {}
+  : client_impl_(new ClientImpl(slots)) {}
 
 LifeStuff::~LifeStuff() {}
 

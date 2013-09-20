@@ -23,6 +23,8 @@
 
 #include "maidsafe/lifestuff/lifestuff.h"
 
+#include "maidsafe/lifestuff/client_impl.h"
+
 namespace maidsafe {
 namespace lifestuff {
 
@@ -92,7 +94,7 @@ class LifeStuff {
   std::string owner_path();
 
  private:
-  std::unique_ptr<ClientImpl<ClientData>> client_impl_;
+  std::unique_ptr<ClientImpl> client_impl_;
 };
 
 }  // namespace lifestuff

@@ -55,7 +55,7 @@ Identity Session::unique_user_id() const {
   return user_details_.unique_user_id;
 }
 
-std::string Session::drive_root_id() const {
+Identity Session::drive_root_id() const {
   return user_details_.drive_root_id;
 }
 
@@ -96,7 +96,7 @@ void Session::set_unique_user_id(const Identity& unique_user_id) {
   user_details_.unique_user_id = unique_user_id;
 }
 
-void Session::set_drive_root_id(const std::string& drive_root_id) {
+void Session::set_drive_root_id(const Identity& drive_root_id) {
   user_details_.drive_root_id = drive_root_id;
 }
 
@@ -158,7 +158,7 @@ void Session::Parse(const NonEmptyString& serialised_data_atlas) {
   }
 
   set_unique_user_id(Identity(data_atlas.user_data().unique_user_id()));
-  set_drive_root_id(data_atlas.user_data().drive_root_id());
+  set_drive_root_id(Identity(data_atlas.user_data().drive_root_id()));
   set_storage_path(data_atlas.user_data().storage_path());
   set_max_space(data_atlas.user_data().max_space());
   set_used_space(data_atlas.user_data().used_space());
@@ -173,7 +173,7 @@ NonEmptyString Session::Serialise() {
 
   UserData* user_data(data_atlas.mutable_user_data());
   user_data->set_unique_user_id(unique_user_id().string());
-  user_data->set_drive_root_id(drive_root_id());
+  user_data->set_drive_root_id(drive_root_id().string());
   user_data->set_storage_path(storage_path().string());
   user_data->set_max_space(max_space());
   user_data->set_used_space(used_space());

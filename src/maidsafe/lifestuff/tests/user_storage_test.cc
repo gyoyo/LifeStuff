@@ -24,7 +24,7 @@
 #include "maidsafe/common/test.h"
 #include "maidsafe/common/utils.h"
 
-#include "maidsafe/nfs/nfs.h"
+#include "maidsafe/nfs/client/maid_node_nfs.h"
 
 #include "maidsafe/lifestuff/detail/routing_handler.h"
 #include "maidsafe/lifestuff/detail/session.h"
@@ -40,7 +40,7 @@ namespace test {
 class UserStorageTest : public testing::Test {
  public:
   typedef std::shared_ptr<RoutingHandler> RoutingHandlerPtr;
-  typedef std::shared_ptr<nfs::ClientMaidNfs> ClientNfsPtr;
+  typedef std::shared_ptr<nfs_client::MaidNodeNfs> ClientNfsPtr;
   typedef std::shared_ptr<UserStorage> UserStoragePtr;
 
   UserStorageTest()
@@ -60,21 +60,25 @@ class UserStorageTest : public testing::Test {
       [this](const NodeId& /*node_id*/, const GivePublicKeyFunctor& /*give_key*/) {
         LOG(kInfo) << "Public key requested.";
       });
-    passport::Maid maid(session_.passport().Get<passport::Maid>(true));
+    passport::Maid maid(session_.passport().template Get<passport::Maid>(true));
+    passport::Pmid::Name pmid_name(session_.passport().template Get<passport::Pmid>(true).name());
     routing_handler_.reset(new RoutingHandler(maid, public_key_request));
-    client_nfs_.reset(new nfs::ClientMaidNfs(routing_handler_->routing(), maid));
+    client_nfs_.reset(new nfs_client::MaidNodeNfs(routing_handler_->asio_service(),
+                                                  routing_handler_->routing(),
+                                                  passport::PublicPmid::Name(pmid_name)));
     user_storage_.reset(new UserStorage());
   }
 
   void TearDown() {}
 
   void MountDrive() {
-    user_storage_->MountDrive(*client_nfs_, session_);
+    lifestuff::OnServiceAddedFunction on_service_added([]() { LOG(kInfo) << "Service added."; });
+    user_storage_->MountDrive(client_nfs_, session_, on_service_added);
     ASSERT_TRUE(user_storage_->mount_status());
   }
 
   void UnMountDrive() {
-    user_storage_->UnMountDrive(session_);
+    user_storage_->UnMountDrive();
   }
 
   fs::path owner_path() {

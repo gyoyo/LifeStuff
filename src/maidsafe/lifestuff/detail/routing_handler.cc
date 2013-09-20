@@ -44,13 +44,12 @@ RoutingHandler::Routing& RoutingHandler::routing() {
   return routing_;
 }
 
+AsioService& RoutingHandler::asio_service() {
+  return asio_service_;
+}
+
 RoutingHandler::Functors RoutingHandler::InitialiseFunctors() {
   Functors functors;
-  functors.message_received = [this](const std::string& message,
-                                     bool /*cache_lookup*/,
-                                     const routing::ReplyFunctor& reply_functor) {
-                                OnMessageReceived(message, reply_functor);
-                              };
   functors.network_status = [this](const int& network_health) {
                               OnNetworkStatusChange(network_health);
                             };

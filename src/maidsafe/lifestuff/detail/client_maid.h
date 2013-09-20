@@ -21,6 +21,8 @@
 
 #include "maidsafe/data_store/sure_file_store.h"
 
+#include "maidsafe/nfs/client/maid_node_nfs.h"
+#include "maidsafe/nfs/vault/pmid_registration.h"
 #include "maidsafe/routing/routing_api.h"
 
 #include "maidsafe/lifestuff/lifestuff.h"
@@ -36,11 +38,11 @@ class ClientMaid {
  public:
   typedef std::unique_ptr<RoutingHandler> RoutingHandlerPtr;
   typedef RoutingHandler::EndPointVector EndPointVector;
-//  typedef nfs::PmidRegistration PmidRegistration;
+  typedef nfs_vault::PmidRegistration PmidRegistration;
   typedef lifestuff_manager::ClientController ClientController;
   typedef std::unique_ptr<ClientController> ClientControllerPtr;
-  typedef data_store::SureFileStore Storage;  // TODO() change to lifestuff's storage type.
-  typedef std::unique_ptr<Storage> StoragePtr;
+  typedef nfs_client::MaidNodeNfs Storage;
+  typedef std::shared_ptr<Storage> StoragePtr;
   typedef UserStorage UserStorage;
   typedef passport::Passport Passport;
   typedef passport::Anmid Anmid;
@@ -51,6 +53,12 @@ class ClientMaid {
   typedef passport::Pmid Pmid;
   typedef passport::Mid Mid;
   typedef passport::Tmid Tmid;
+  typedef passport::PublicAnmid PublicAnmid;
+  typedef passport::PublicAnsmid PublicAnsmid;
+  typedef passport::PublicAntmid PublicAntmid;
+  typedef passport::PublicAnmaid PublicAnmaid;
+  typedef passport::PublicMaid PublicMaid;
+  typedef passport::PublicPmid PublicPmid;
 
   ClientMaid(Session& session, const Slots& slots);
   ~ClientMaid();
@@ -63,7 +71,7 @@ class ClientMaid {
   void LogIn(const Keyword& keyword,
              const Pin& pin,
              const Password& password,
-             const boost::filesystem::path& /*storage_path*/,
+             const boost::filesystem::path& storage_path,
              ReportProgressFunction& report_progress);
   void LogOut();
 
@@ -93,7 +101,7 @@ class ClientMaid {
   const Slots& CheckSlots(const Slots& slots);
 
   void PutSession(const Keyword& keyword, const Pin& pin, const Password& password);
-  void DeleteSession(const Keyword& keyword, const Pin& pin;
+  void DeleteSession(const Keyword& keyword, const Pin& pin);
   void GetSession(const Keyword& keyword, const Pin& pin, const Password& password);
 
   void JoinNetwork(const Maid& maid);

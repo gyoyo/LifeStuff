@@ -153,7 +153,7 @@ bool ClientImpl::ConfirmUserInput(InputField input_field) {
 }
 
 void ClientImpl::CreateUser(const boost::filesystem::path& storage_path,
-                                     ReportProgressFunction& report_progress) {
+                            ReportProgressFunction& report_progress) {
   FinaliseUserInput();
   ResetConfirmationInput();
   client_maid_.CreateUser(*keyword_, *pin_, *password_, storage_path, report_progress);
@@ -163,7 +163,7 @@ void ClientImpl::CreateUser(const boost::filesystem::path& storage_path,
 }
 
 void ClientImpl::LogIn(const boost::filesystem::path& storage_path,
-                                ReportProgressFunction& report_progress) {
+                       ReportProgressFunction& report_progress) {
   FinaliseUserInput();
   client_maid_.LogIn(*keyword_, *pin_, *password_, storage_path, report_progress);
   ResetInput();

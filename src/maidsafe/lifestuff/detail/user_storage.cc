@@ -32,18 +32,21 @@ UserStorage::UserStorage()
       drive_(),
       mount_thread_() {}
 
-void UserStorage::MountDrive(Storage& storage, Session& session) {
+void UserStorage::MountDrive(StoragePtr storage, Session& session, OnServiceAddedFunction on_service_added) {
   if (mount_status_)
     return;
+  drive::OnServiceAdded service_added = [on_service_added]() { on_service_added(); };
+  std::string product_id;
 #ifdef WIN32
   mount_path_ = drive::GetNextAvailableDrivePath();
+  product_id = BOOST_PP_STRINGIZE(CBFS_APPLICATION_KEY);
   drive_.reset(new Drive(storage,
                          session.unique_user_id(),
                          session.drive_root_id(),
                          mount_path_,
+                         product_id,
                          kDriveLogo.string(),
-                         session.max_space(),
-                         session.used_space()));
+                         service_added));
   mount_status_ = true;
   if (session.drive_root_id() != drive_->drive_root_id())
     session.set_drive_root_id(drive_->drive_root_id());
@@ -71,7 +74,7 @@ void UserStorage::MountDrive(Storage& storage, Session& session) {
 #endif
 }
 
-void UserStorage::UnMountDrive(Session& session) {
+void UserStorage::UnMountDrive() {
   if (!mount_status_)
     return;
   drive_->Unmount();
