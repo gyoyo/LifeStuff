@@ -94,7 +94,7 @@ class Session {
         storage_path(),
         max_space(1073741824),
         used_space(0),
-        session_name(EncodeToHex(crypto::SHA1Hash(RandomAlphaNumericString(20)))) {}
+        session_name(HexEncode(crypto::SHA1Hash(RandomAlphaNumericString(20)))) {}
     Identity unique_user_id;
     Identity drive_root_id;
     boost::filesystem::path storage_path;

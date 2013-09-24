@@ -89,7 +89,7 @@ const Password& Session::password() const {
 
 void Session::set_session_name() {
   NonEmptyString random(RandomAlphaNumericString(64));
-  user_details_.session_name = NonEmptyString(EncodeToHex(crypto::Hash<crypto::SHA1>(random)));
+  user_details_.session_name = NonEmptyString(HexEncode(crypto::Hash<crypto::SHA1>(random)));
 }
 
 void Session::set_unique_user_id(const Identity& unique_user_id) {
