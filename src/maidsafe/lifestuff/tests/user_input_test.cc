@@ -31,10 +31,11 @@ class UserInputTest : public testing::Test {
  public:
   typedef std::unique_ptr<LifeStuff> LifeStuffPtr;
 
-  enum InvalidInputField { kInvalidInputField = 7 };
+  enum InvalidInputField {
+    kInvalidInputField = 7
+  };
 
-  UserInputTest()
-    : lifestuff_() {}
+  UserInputTest() : lifestuff_() {}
 
  protected:
   void SetUp() {

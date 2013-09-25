@@ -27,14 +27,13 @@ namespace lifestuff {
 
 class ClientMpid {
  public:
-  
+
   ClientMpid();
   ~ClientMpid() {}
 
   void CreatePublicId(const NonEmptyString& public_id);
 
  private:
-
 };
 
 }  // lifestuff

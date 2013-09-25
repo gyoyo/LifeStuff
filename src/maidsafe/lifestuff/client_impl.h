@@ -38,7 +38,8 @@ class ClientImpl {
   void ClearUserInput(InputField input_field);
   bool ConfirmUserInput(InputField input_field);
 
-  void CreateUser(const boost::filesystem::path& storage_path, ReportProgressFunction& report_progress);
+  void CreateUser(const boost::filesystem::path& storage_path,
+                  ReportProgressFunction& report_progress);
   void LogIn(const boost::filesystem::path& storage_path, ReportProgressFunction& report_progress);
   void LogOut();
   void MountDrive();

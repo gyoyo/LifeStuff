@@ -22,17 +22,13 @@
 
 #include "maidsafe/common/utils.h"
 
-
 namespace maidsafe {
 namespace lifestuff {
 
-UserStorage::UserStorage()
-    : mount_status_(false),
-      mount_path_(),
-      drive_(),
-      mount_thread_() {}
+UserStorage::UserStorage() : mount_status_(false), mount_path_(), drive_(), mount_thread_() {}
 
-void UserStorage::MountDrive(StoragePtr storage, Session& session, OnServiceAddedFunction on_service_added) {
+void UserStorage::MountDrive(StoragePtr storage, Session& session,
+                             OnServiceAddedFunction on_service_added) {
   if (mount_status_)
     return;
   drive::OnServiceAdded service_added = [on_service_added]() { on_service_added(); };
@@ -40,13 +36,8 @@ void UserStorage::MountDrive(StoragePtr storage, Session& session, OnServiceAdde
 #ifdef WIN32
   mount_path_ = drive::GetNextAvailableDrivePath();
   product_id = BOOST_PP_STRINGIZE(CBFS_APPLICATION_KEY);
-  drive_.reset(new Drive(storage,
-                         session.unique_user_id(),
-                         session.drive_root_id(),
-                         mount_path_,
-                         product_id,
-                         kDriveLogo.string(),
-                         service_added));
+  drive_.reset(new Drive(storage, session.unique_user_id(), session.drive_root_id(), mount_path_,
+                         product_id, kDriveLogo.string(), service_added));
   mount_status_ = true;
   if (session.drive_root_id() != drive_->drive_root_id())
     session.set_drive_root_id(drive_->drive_root_id());
@@ -55,21 +46,13 @@ void UserStorage::MountDrive(StoragePtr storage, Session& session, OnServiceAdde
   if (!boost::filesystem::exists(mount_path_)) {
     boost::filesystem::create_directories(mount_path_, error_code);
     if (error_code) {
-      LOG(kError) << "Failed to create mount dir(" << mount_path_ << "): "
-                  << error_code.message();
+      LOG(kError) << "Failed to create mount dir(" << mount_path_ << "): " << error_code.message();
     }
   }
-  drive_.reset(new     Drive(storage,
-                             session.passport().Get<Maid>(true),
-                             session.unique_user_id(),
-                             session.drive_root_id(),
-                             mount_path_,
-                             kDriveLogo.string(),
-                             session.max_space(),
-                             session.used_space()));
-  mount_thread_ = std::move(std::thread([this] {
-                                          drive_->Mount();
-                                        }));
+  drive_.reset(new Drive(storage, session.passport().Get<Maid>(true), session.unique_user_id(),
+                         session.drive_root_id(), mount_path_, kDriveLogo.string(),
+                         session.max_space(), session.used_space()));
+  mount_thread_ = std::move(std::thread([this] { drive_->Mount(); }));
   mount_status_ = drive_->WaitUntilMounted();
 #endif
 }
@@ -95,13 +78,9 @@ boost::filesystem::path UserStorage::mount_path() {
 #endif
 }
 
-boost::filesystem::path UserStorage::owner_path() {
-  return mount_path() / kOwner;
-}
+boost::filesystem::path UserStorage::owner_path() { return mount_path() / kOwner; }
 
-bool UserStorage::mount_status() {
-  return mount_status_;
-}
+bool UserStorage::mount_status() { return mount_status_; }
 
 }  // namespace lifestuff
 }  // namespace maidsafe

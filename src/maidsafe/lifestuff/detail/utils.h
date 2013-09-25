@@ -26,84 +26,85 @@ namespace lifestuff {
 
 namespace detail {
 
-  template <typename Input>
-  struct InsertUserInput {
-    typedef std::unique_ptr<Input> InputPtr;
+template <typename Input>
+struct InsertUserInput {
+  typedef std::unique_ptr<Input> InputPtr;
 
-    void operator()(InputPtr& input, uint32_t position, const std::string& characters) {
-      if (!input)
-        input.reset(new Input());
-      input->Insert(position, characters);
-      return;
+  void operator()(InputPtr& input, uint32_t position, const std::string& characters) {
+    if (!input)
+      input.reset(new Input());
+    input->Insert(position, characters);
+    return;
+  }
+};
+
+template <typename Input>
+struct RemoveUserInput {
+  typedef std::unique_ptr<Input> InputPtr;
+
+  void operator()(InputPtr& input, uint32_t position, uint32_t length) {
+    if (!input)
+      ThrowError(CommonErrors::uninitialised);
+    input->Remove(position, length);
+    return;
+  }
+};
+
+template <typename Input>
+struct ClearUserInput {
+  typedef std::unique_ptr<Input> InputPtr;
+
+  void operator()(InputPtr& input) {
+    if (input)
+      input->Clear();
+    return;
+  }
+};
+
+template <typename Input>
+struct ConfirmUserInput {
+  typedef std::unique_ptr<Input> InputPtr;
+
+  bool operator()(InputPtr& input) {
+    if (!input)
+      return false;
+    return input->IsValid(boost::regex(kCharRegex));
+  }
+
+  bool operator()(InputPtr& input, InputPtr& confirmation_input) {
+    if (!input || !confirmation_input)
+      return false;
+    if (!input->IsFinalised())
+      input->Finalise();
+    if (!confirmation_input->IsFinalised())
+      confirmation_input->Finalise();
+    if (input->string() != confirmation_input->string()) {
+      return false;
     }
-  };
+    return true;
+  }
 
-  template <typename Input>
-  struct RemoveUserInput {
-    typedef std::unique_ptr<Input> InputPtr;
-
-    void operator()(InputPtr& input, uint32_t position, uint32_t length) {
-      if (!input)
-        ThrowError(CommonErrors::uninitialised);
-      input->Remove(position, length);
-      return;
-    }
-  };
-
-  template <typename Input>
-  struct ClearUserInput {
-    typedef std::unique_ptr<Input> InputPtr;
-
-    void operator()(InputPtr& input) {
-      if (input)
-        input->Clear();
-      return;
-    }
-  };
-
-  template <typename Input>
-  struct ConfirmUserInput {
-    typedef std::unique_ptr<Input> InputPtr;
-
-     bool operator()(InputPtr& input) {
-      if (!input)
+  bool operator()(InputPtr& input, InputPtr& confirmation_input, InputPtr& current_input,
+                  const Session& session) {
+    if (!current_input)
+      return false;
+    if (!current_input->IsFinalised())
+      current_input->Finalise();
+    if (input) {
+      input->Finalise();
+      if (!confirmation_input)
         return false;
-      return input->IsValid(boost::regex(kCharRegex));
-    }
-
-    bool operator()(InputPtr& input, InputPtr& confirmation_input) {
-      if (!input || !confirmation_input)
+      confirmation_input->Finalise();
+      if (input->string() != confirmation_input->string() ||
+          session.password().string() != current_input->string())
         return false;
-      if (!input->IsFinalised())
-        input->Finalise();
-      if (!confirmation_input->IsFinalised())
-        confirmation_input->Finalise();
-      if (input->string() != confirmation_input->string()) {
+    } else {
+      if (session.password().string() != current_input->string())
         return false;
-      }
-      return true;
     }
-
-    bool operator()(InputPtr& input, InputPtr& confirmation_input, InputPtr& current_input, const Session& session) {
-      if (!current_input)
-        return false;
-      if (!current_input->IsFinalised())
-        current_input->Finalise();
-      if (input) {
-        input->Finalise();
-        if (!confirmation_input)
-          return false;
-        confirmation_input->Finalise();
-        if (input->string() != confirmation_input->string()
-            || session.password().string() != current_input->string())
-          return false;
-      } else {
-        if (session.password().string() != current_input->string())
-          return false;
-      }
-      return true;
-    }
-  };
+    return true;
+  }
+};
 
 }  // namespace detail
 

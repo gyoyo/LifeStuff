@@ -28,7 +28,7 @@
 
 namespace maidsafe {
 namespace lifestuff {
- 
+
 typedef routing::GivePublicKeyFunctor GivePublicKeyFunctor;
 typedef std::function<void(const NodeId&, const GivePublicKeyFunctor&)> PublicKeyRequestFunction;
 
@@ -56,13 +56,13 @@ class RoutingHandler {
   RoutingHandler& operator=(const RoutingHandler&);
 
   Functors InitialiseFunctors();
-  
-  void OnMessageReceived(const std::string& message,  const ReplyFunctor& reply_functor);
+
+  void OnMessageReceived(const std::string& message, const ReplyFunctor& reply_functor);
   void DoOnMessageReceived(const std::string& message, const ReplyFunctor& reply_functor);
   void OnNetworkStatusChange(const int& network_health);
   void DoOnNetworkStatusChange(const int& network_health);
-  void OnPublicKeyRequested(const NodeId &node_id, const GivePublicKeyFunctor &give_key);
-  void DoOnPublicKeyRequested(const NodeId &node_id, const GivePublicKeyFunctor &give_key);
+  void OnPublicKeyRequested(const NodeId& node_id, const GivePublicKeyFunctor& give_key);
+  void DoOnPublicKeyRequested(const NodeId& node_id, const GivePublicKeyFunctor& give_key);
   void OnNewBootstrapEndpoint(const UdpEndPoint& endpoint);
   void DoOnNewBootstrapEndpoint(const UdpEndPoint& endpoint);
 

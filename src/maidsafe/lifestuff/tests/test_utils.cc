@@ -30,7 +30,7 @@ namespace lifestuff {
 
 namespace test {
 
-fs::path CreateTestFileWithContent(fs::path const& parent, const std::string &content) {
+fs::path CreateTestFileWithContent(fs::path const& parent, const std::string& content) {
   fs::path file(parent / (RandomAlphaNumericString(5) + ".txt"));
   std::ofstream ofs;
   ofs.open(file.native().c_str(), std::ios_base::out | std::ios_base::binary);
@@ -51,7 +51,7 @@ fs::path CreateTestFileWithSize(fs::path const& parent, size_t size) {
   return CreateTestFileWithContent(parent, file_content);
 }
 
-fs::path CreateTestFile(fs::path const& parent, int64_t &file_size) {
+fs::path CreateTestFile(fs::path const& parent, int64_t& file_size) {
   size_t size = RandomUint32() % 4096;
   file_size = size;
   return CreateTestFileWithSize(parent, size);
@@ -77,7 +77,7 @@ bool CreateFileAt(fs::path const& path) {
   return true;
 }
 
-bool ModifyFile(fs::path const& path, int64_t &file_size) {
+bool ModifyFile(fs::path const& path, int64_t& file_size) {
   size_t size = maidsafe::RandomInt32() % 1048576;  // 2^20
   file_size = size;
   LOG(kInfo) << "ModifyFile: filename = " << path << " new size " << size;
@@ -96,7 +96,7 @@ bool ModifyFile(fs::path const& path, int64_t &file_size) {
       }
       ofs.close();
     }
-    catch(...) {
+    catch (...) {
       LOG(kError) << "Write exception thrown.";
       return false;
     }
@@ -107,12 +107,10 @@ bool ModifyFile(fs::path const& path, int64_t &file_size) {
 fs::path CreateTestDirectory(fs::path const& parent) {
   fs::path directory(parent / RandomAlphaNumericString(5));
   boost::system::error_code error_code;
-  EXPECT_TRUE(fs::create_directories(directory, error_code)) << directory
-              << ": " << error_code.message();
-  EXPECT_EQ(0, error_code.value()) << directory << ": "
-                                    << error_code.message();
-  EXPECT_TRUE(fs::exists(directory, error_code)) << directory << ": "
-                                                  << error_code.message();
+  EXPECT_TRUE(fs::create_directories(directory, error_code)) << directory << ": "
+                                                             << error_code.message();
+  EXPECT_EQ(0, error_code.value()) << directory << ": " << error_code.message();
+  EXPECT_TRUE(fs::exists(directory, error_code)) << directory << ": " << error_code.message();
   return directory;
 }
 
@@ -132,27 +130,21 @@ fs::path CreateTestDirectoriesAndFiles(fs::path const& parent) {
       break;
     if (r2 < r3) {
       check = CreateTestDirectoriesAndFiles(directory);
-      EXPECT_TRUE(fs::exists(check, error_code)) << check << ": "
-                                                  << error_code.message();
-      EXPECT_EQ(0, error_code.value()) << check << ": "
-                                        << error_code.message();
+      EXPECT_TRUE(fs::exists(check, error_code)) << check << ": " << error_code.message();
+      EXPECT_EQ(0, error_code.value()) << check << ": " << error_code.message();
     } else if (r2 > r3) {
       r4 = distribution(generator);
       for (size_t j = 0; j != r4; ++j) {
         check = CreateTestFile(directory, file_size);
-        EXPECT_TRUE(fs::exists(check, error_code)) << check << ": "
-                                                    << error_code.message();
-        EXPECT_EQ(0, error_code.value()) << check << ": "
-                                          << error_code.message();
+        EXPECT_TRUE(fs::exists(check, error_code)) << check << ": " << error_code.message();
+        EXPECT_EQ(0, error_code.value()) << check << ": " << error_code.message();
       }
     } else {
       r4 = distribution(generator);
       for (size_t j = 0; j != r4; ++j) {
         check = CreateTestDirectory(directory);
-        EXPECT_TRUE(fs::exists(check, error_code)) << check << ": "
-                                                    << error_code.message();
-        EXPECT_EQ(0, error_code.value()) << check << ": "
-                                          << error_code.message();
+        EXPECT_TRUE(fs::exists(check, error_code)) << check << ": " << error_code.message();
+        EXPECT_EQ(0, error_code.value()) << check << ": " << error_code.message();
       }
     }
   }
@@ -191,7 +183,7 @@ fs::path CreateDirectoryContainingFiles(fs::path const& path) {
     }
     return directory;
   }
-  catch(const std::exception &e) {
+  catch (const std::exception& e) {
     LOG(kError) << e.what();
     return "";
   }
@@ -210,8 +202,7 @@ bool CopyDirectories(fs::path const& from, fs::path const& to) {
       if (fs::is_directory(*begin)) {
         EXPECT_TRUE(CopyDirectories((*begin).path(), to / from.filename()));
       } else if (fs::is_regular_file(*begin)) {
-        fs::copy_file((*begin).path(),
-                      to / from.filename() / (*begin).path().filename(),
+        fs::copy_file((*begin).path(), to / from.filename() / (*begin).path().filename(),
                       fs::copy_option::fail_if_exists);
         EXPECT_TRUE(fs::exists(to / from.filename() / (*begin).path().filename()));
       } else {
@@ -223,7 +214,7 @@ bool CopyDirectories(fs::path const& from, fs::path const& to) {
       }
     }
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "CopyDirectories: Failed";
     return false;
   }
@@ -241,14 +232,13 @@ bool CompareDirectoryEntries(fs::path const& drive_path, fs::path const& disk_pa
     for (; compare != end; ++compare)
       disk_files.insert((*compare).path().filename());
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "CompareDirectoryEntries: Failed";
     return false;
   }
   std::size_t drive_files_total(drive_files.size()), disk_files_total(disk_files.size());
   if (drive_files_total == disk_files_total) {
-    iterator first1 = drive_files.begin(), last1 = drive_files.end(),
-              first2 = disk_files.begin();
+    iterator first1 = drive_files.begin(), last1 = drive_files.end(), first2 = disk_files.begin();
     for (; first1 != last1; ++first1, ++first2)
       EXPECT_EQ(*first1, *first2);
   } else if (drive_files_total > disk_files_total) {
@@ -299,7 +289,7 @@ fs::path LocateNthFile(fs::path const& path, size_t n) {
       }
     }
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "Test LocateNthFile: Failed";
     return fs::path();
   }
@@ -320,7 +310,7 @@ fs::path LocateNthDirectory(fs::path const& path, size_t n) {
       }
     }
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "Test LocateNthDirectory: Failed";
     return fs::path();
   }
@@ -328,16 +318,15 @@ fs::path LocateNthDirectory(fs::path const& path, size_t n) {
   return temp_path;
 }
 
-fs::path FindDirectoryOrFile(fs::path const& path,
-                              fs::path const& find) {
+fs::path FindDirectoryOrFile(fs::path const& path, fs::path const& find) {
   fs::recursive_directory_iterator begin(path), end;
   try {
     for (; begin != end; ++begin) {
-        if ((*begin).path().filename() == find)
-          return (*begin).path();
+      if ((*begin).path().filename() == find)
+        return (*begin).path();
     }
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "Test FindDirectoryOrFile: Failed";
     return fs::path();
   }
@@ -360,7 +349,7 @@ int64_t CalculateUsedSpace(fs::path const& path) {
       }
     }
   }
-  catch(...) {
+  catch (...) {
     LOG(kError) << "CalculatUsedSpace: Failed";
     return 0;
   }
@@ -470,10 +459,7 @@ bool DoRandomEvents(fs::path mount_dir, fs::path mirror_dir) {
         EXPECT_TRUE(fs::exists(file, error_code));
         EXPECT_EQ(error_code.value(), 0);
         // Copy file to virtual drive...
-        fs::copy_file(file,
-                      mount_dir / file.filename(),
-                      copy_option::fail_if_exists,
-                      error_code);
+        fs::copy_file(file, mount_dir / file.filename(), copy_option::fail_if_exists, error_code);
         EXPECT_EQ(error_code.value(), 0);
         EXPECT_TRUE(fs::exists(mount_dir / file.filename(), error_code));
         break;
@@ -485,16 +471,11 @@ bool DoRandomEvents(fs::path mount_dir, fs::path mirror_dir) {
         if (file != fs::path()) {
           fs::path found(FindDirectoryOrFile(mirror_dir, file.filename()));
           EXPECT_NE(found, fs::path());
-          fs::copy_file(found,
-                        mount_dir / found.filename(),
-                        copy_option::fail_if_exists,
+          fs::copy_file(found, mount_dir / found.filename(), copy_option::fail_if_exists,
                         error_code);
-          EXPECT_TRUE(fs::exists(mount_dir / found.filename(),
-                                  error_code));
+          EXPECT_TRUE(fs::exists(mount_dir / found.filename(), error_code));
           EXPECT_EQ(error_code.value(), 0);
-          fs::copy_file(file,
-                        mirror_dir / file.filename(),
-                        copy_option::fail_if_exists,
+          fs::copy_file(file, mirror_dir / file.filename(), copy_option::fail_if_exists,
                         error_code);
           EXPECT_TRUE(fs::exists(mirror_dir / file.filename(), error_code));
           EXPECT_EQ(error_code.value(), 0);
@@ -532,38 +513,34 @@ bool DoRandomEvents(fs::path mount_dir, fs::path mirror_dir) {
   return true;
 }
 
-void PrintResult(const bptime::ptime &start_time,
-                  const bptime::ptime &stop_time,
-                  size_t size, TestOperationCode operation_code) {
+void PrintResult(const bptime::ptime& start_time, const bptime::ptime& stop_time, size_t size,
+                 TestOperationCode operation_code) {
   uint64_t duration = (stop_time - start_time).total_microseconds();
   if (duration == 0)
     duration = 1;
   uint64_t rate((static_cast<uint64_t>(size) * 1000000) / duration);
   switch (operation_code) {
     case(kCopy) : {
-      std::cout << "Copy " << BytesToBinarySiUnits(size)
-                << " of data to drive in " << (duration / 1000000.0)
-                << " seconds at a speed of " << BytesToBinarySiUnits(rate)
+      std::cout << "Copy " << BytesToBinarySiUnits(size) << " of data to drive in "
+                << (duration / 1000000.0) << " seconds at a speed of " << BytesToBinarySiUnits(rate)
                 << "/s" << std::endl;
       break;
     }
     case(kRead) : {
-      std::cout << "Read " << BytesToBinarySiUnits(size)
-                << " Bytes of data from drive in " << (duration / 1000000.0)
-                << " seconds at a speed of " << BytesToBinarySiUnits(rate)
+      std::cout << "Read " << BytesToBinarySiUnits(size) << " Bytes of data from drive in "
+                << (duration / 1000000.0) << " seconds at a speed of " << BytesToBinarySiUnits(rate)
                 << "/s" << std::endl;
       break;
     }
     case(kCompare) : {
-      std::cout << "Compare " << BytesToBinarySiUnits(size)
-                << " Bytes of data from drive in " << (duration / 1000000.0)
-                << " seconds at a speed of " << BytesToBinarySiUnits(rate)
+      std::cout << "Compare " << BytesToBinarySiUnits(size) << " Bytes of data from drive in "
+                << (duration / 1000000.0) << " seconds at a speed of " << BytesToBinarySiUnits(rate)
                 << "/s" << std::endl;
     }
   }
 }
 
-bool ExcludedFilename(const fs::path &path) {
+bool ExcludedFilename(const fs::path& path) {
   std::string file_name(path.filename().stem().string());
   if (file_name.size() == 4 && isdigit(file_name[3])) {
     if (file_name[3] != '0') {
@@ -609,9 +586,7 @@ bool ExcludedFilename(const fs::path &path) {
   return false;
 }
 
-fs::path GenerateFile(const fs::path &path,
-                      std::uint32_t size,
-                      const std::string &content) {
+fs::path GenerateFile(const fs::path& path, std::uint32_t size, const std::string& content) {
   if ((size == 0 && content.empty()) || (size != 0 && !content.empty()))
     return fs::path();
 
@@ -639,7 +614,7 @@ fs::path GenerateFile(const fs::path &path,
   return file_name;
 }
 
-fs::path GenerateDirectory(const fs::path &path) {
+fs::path GenerateDirectory(const fs::path& path) {
   size_t directory_name_size(RandomUint32() % 8 + 1);
   fs::path file_name(RandomAlphaNumericString(directory_name_size));
 #ifndef WIN32
@@ -654,20 +629,15 @@ fs::path GenerateDirectory(const fs::path &path) {
   return file_name;
 }
 
-void GenerateFileSizes(std::uint32_t max_size,
-                       std::uint32_t min_size,
-                       size_t count,
-                       std::vector<std::uint32_t> *file_sizes) {
+void GenerateFileSizes(std::uint32_t max_size, std::uint32_t min_size, size_t count,
+                       std::vector<std::uint32_t>* file_sizes) {
   while (file_sizes->size() < count)
     file_sizes->push_back(RandomUint32() % max_size + min_size);
 }
 
-std::uint32_t CreateTestTreeStructure(const fs::path &base_path,
-                                      std::vector<fs::path> *directories,
-                                      std::set<fs::path> *files,
-                                      std::uint32_t directory_node_count,
-                                      std::uint32_t file_node_count,
-                                      std::uint32_t max_filesize,
+std::uint32_t CreateTestTreeStructure(const fs::path& base_path, std::vector<fs::path>* directories,
+                                      std::set<fs::path>* files, std::uint32_t directory_node_count,
+                                      std::uint32_t file_node_count, std::uint32_t max_filesize,
                                       std::uint32_t min_size) {
   fs::path directory(GenerateDirectory(base_path));
   directories->reserve(directory_node_count);
@@ -694,7 +664,7 @@ std::uint32_t CreateTestTreeStructure(const fs::path &base_path,
   return total_file_size;
 }
 
-void CopyRecursiveDirectory(const fs::path &src, const fs::path &dest) {
+void CopyRecursiveDirectory(const fs::path& src, const fs::path& dest) {
   boost::system::error_code ec;
   fs::copy_directory(src, dest / src.filename(), ec);
   for (fs::recursive_directory_iterator end, current(src); current != end; ++current) {

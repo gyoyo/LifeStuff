@@ -36,7 +36,9 @@
 namespace maidsafe {
 namespace lifestuff {
 
-namespace test { class SessionTest; }
+namespace test {
+class SessionTest;
+}
 
 typedef passport::detail::Keyword Keyword;
 typedef passport::detail::Pin Pin;
@@ -84,17 +86,17 @@ class Session {
   friend class test::SessionTest;
 
  private:
-  Session &operator=(const Session&);
+  Session& operator=(const Session&);
   Session(const Session&);
 
   struct UserDetails {
     UserDetails()
-      : unique_user_id(),
-        drive_root_id(),
-        storage_path(),
-        max_space(1073741824),
-        used_space(0),
-        session_name(HexEncode(crypto::SHA1Hash(RandomAlphaNumericString(20)))) {}
+        : unique_user_id(),
+          drive_root_id(),
+          storage_path(),
+          max_space(1073741824),
+          used_space(0),
+          session_name(HexEncode(crypto::SHA1Hash(RandomAlphaNumericString(20)))) {}
     Identity unique_user_id;
     Identity drive_root_id;
     boost::filesystem::path storage_path;

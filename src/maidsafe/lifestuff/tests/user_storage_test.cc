@@ -44,22 +44,21 @@ class UserStorageTest : public testing::Test {
   typedef std::shared_ptr<UserStorage> UserStoragePtr;
 
   UserStorageTest()
-    : test_dir_(maidsafe::test::CreateTestPath()),
-      mount_dir_(*test_dir_ / RandomAlphaNumericString(8)),
-      session_(),
-      routing_handler_(),
-      client_nfs_(),
-      user_storage_() {}
+      : test_dir_(maidsafe::test::CreateTestPath()),
+        mount_dir_(*test_dir_ / RandomAlphaNumericString(8)),
+        session_(),
+        routing_handler_(),
+        client_nfs_(),
+        user_storage_() {}
 
  protected:
   void SetUp() {
     session_.passport().CreateFobs();
     session_.passport().ConfirmFobs();
     session_.set_unique_user_id(Identity(RandomAlphaNumericString(64)));
-    PublicKeyRequestFunction public_key_request(
-      [this](const NodeId& /*node_id*/, const GivePublicKeyFunctor& /*give_key*/) {
-        LOG(kInfo) << "Public key requested.";
-      });
+    PublicKeyRequestFunction public_key_request([this](
+        const NodeId & /*node_id*/,
+        const GivePublicKeyFunctor & /*give_key*/) { LOG(kInfo) << "Public key requested."; });
     passport::Maid maid(session_.passport().template Get<passport::Maid>(true));
     passport::Pmid::Name pmid_name(session_.passport().template Get<passport::Pmid>(true).name());
     routing_handler_.reset(new RoutingHandler(maid, public_key_request));
@@ -77,13 +76,9 @@ class UserStorageTest : public testing::Test {
     ASSERT_TRUE(user_storage_->mount_status());
   }
 
-  void UnMountDrive() {
-    user_storage_->UnMountDrive();
-  }
+  void UnMountDrive() { user_storage_->UnMountDrive(); }
 
-  fs::path owner_path() {
-    return user_storage_->owner_path();
-  }
+  fs::path owner_path() { return user_storage_->owner_path(); }
 
   maidsafe::test::TestPath test_dir_;
   fs::path mount_dir_;
@@ -92,7 +87,6 @@ class UserStorageTest : public testing::Test {
   ClientNfsPtr client_nfs_;
   UserStoragePtr user_storage_;
 };
-
 
 TEST_F(UserStorageTest, BEH_CopyEmptyDirectoryToDrive) {
   EXPECT_NO_THROW(MountDrive());
@@ -483,10 +477,7 @@ TEST_F(UserStorageTest, FUNC_FunctionalTest) {
   EXPECT_NO_THROW(UnMountDrive());
 }
 
-
-
-
-//TEST_F(UserStorageTest, FUNC_GetAndInsertDataMap) {
+// TEST_F(UserStorageTest, FUNC_GetAndInsertDataMap) {
 //  MountDrive(user_storage1_, &session1_);
 //  fs::path mount_dir(user_storage1_->mount_dir());
 //
@@ -521,7 +512,7 @@ TEST_F(UserStorageTest, FUNC_FunctionalTest) {
 //  UnMountDrive(user_storage2_);
 //}
 //
-//TEST_F(UserStorageTest, FUNC_SaveDataMapAndConstructFile) {
+// TEST_F(UserStorageTest, FUNC_SaveDataMapAndConstructFile) {
 //  MountDrive(user_storage1_, &session1_);
 //  fs::path mount_dir(user_storage1_->mount_dir());
 //

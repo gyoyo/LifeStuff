@@ -27,13 +27,13 @@
 #include "maidsafe/common/utils.h"
 
 #ifdef WIN32
-#  ifdef HAVE_CBFS
-#    include "maidsafe/drive/win_drive.h"
-#  else
-#    include "maidsafe/drive/dummy_win_drive.h"
-#  endif
+#ifdef HAVE_CBFS
+#include "maidsafe/drive/win_drive.h"
 #else
-#  include "maidsafe/drive/unix_drive.h"
+#include "maidsafe/drive/dummy_win_drive.h"
+#endif
+#else
+#include "maidsafe/drive/unix_drive.h"
 #endif
 
 #include "maidsafe/data_store/sure_file_store.h"
@@ -43,7 +43,6 @@
 #include "maidsafe/lifestuff/detail/utils.h"
 #include "maidsafe/lifestuff/detail/data_atlas.pb.h"
 
-
 namespace maidsafe {
 namespace lifestuff {
 
@@ -51,18 +50,18 @@ const NonEmptyString kDriveLogo("Lifestuff Drive");
 const boost::filesystem::path kLifeStuffConfigPath("LifeStuff-Config");
 
 #ifdef WIN32
-#  ifdef HAVE_CBFS
-template<typename Storage>
+#ifdef HAVE_CBFS
+template <typename Storage>
 struct Drive {
   typedef drive::CbfsDriveInUserSpace<Storage> MaidDrive;
 };
-#  else
-typedef drive::DummyWinDriveInUserSpace MaidDrive;
-#  endif
 #else
-template<typename Storage>
+typedef drive::DummyWinDriveInUserSpace MaidDrive;
+#endif
+#else
+template <typename Storage>
 struct Drive {
-typedef drive::FuseDriveInUserSpace<Storage> MaidDrive;
+  typedef drive::FuseDriveInUserSpace<Storage> MaidDrive;
 };
 #endif
 
@@ -85,12 +84,11 @@ class UserStorage {
   bool mount_status();
 
  private:
-  UserStorage &operator=(const UserStorage&);
+  UserStorage& operator=(const UserStorage&);
   UserStorage(const UserStorage&);
 
   bool ReadConfigFile(const fs::path& absolute_path, std::string* content);
-  bool WriteConfigFile(const fs::path& absolute_path,
-                       const NonEmptyString& content,
+  bool WriteConfigFile(const fs::path& absolute_path, const NonEmptyString& content,
                        bool overwrite_existing);
 
   bool mount_status_;

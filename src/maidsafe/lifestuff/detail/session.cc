@@ -43,49 +43,27 @@ Session::Session()
 
 Session::~Session() {}
 
-Session::Passport& Session::passport() {
-  return passport_;
-}
+Session::Passport& Session::passport() { return passport_; }
 
-NonEmptyString Session::session_name() const {
-  return user_details_.session_name;
-}
+NonEmptyString Session::session_name() const { return user_details_.session_name; }
 
-Identity Session::unique_user_id() const {
-  return user_details_.unique_user_id;
-}
+Identity Session::unique_user_id() const { return user_details_.unique_user_id; }
 
-Identity Session::drive_root_id() const {
-  return user_details_.drive_root_id;
-}
+Identity Session::drive_root_id() const { return user_details_.drive_root_id; }
 
-boost::filesystem::path Session::storage_path() const {
-  return user_details_.storage_path;
-}
+boost::filesystem::path Session::storage_path() const { return user_details_.storage_path; }
 
-int64_t Session::max_space() const {
-  return user_details_.max_space;
-}
+int64_t Session::max_space() const { return user_details_.max_space; }
 
-int64_t Session::used_space() const {
-  return user_details_.used_space;
-}
+int64_t Session::used_space() const { return user_details_.used_space; }
 
-bool Session::initialised() {
-  return initialised_;
-}
+bool Session::initialised() { return initialised_; }
 
-const Keyword& Session::keyword() const {
-  return *keyword_;
-}
+const Keyword& Session::keyword() const { return *keyword_; }
 
-const Pin& Session::pin() const {
-  return *pin_;
-}
+const Pin& Session::pin() const { return *pin_; }
 
-const Password& Session::password() const {
-  return *password_;
-}
+const Password& Session::password() const { return *password_; }
 
 void Session::set_session_name() {
   NonEmptyString random(RandomAlphaNumericString(64));
@@ -104,19 +82,13 @@ void Session::set_storage_path(const boost::filesystem::path& vault_path) {
   user_details_.storage_path = vault_path;
 }
 
-void Session::set_max_space(const int64_t& max_space) {
-  user_details_.max_space = max_space;
-}
+void Session::set_max_space(const int64_t& max_space) { user_details_.max_space = max_space; }
 
-void Session::set_used_space(const int64_t& used_space) {
-  user_details_.used_space = used_space;
-}
+void Session::set_used_space(const int64_t& used_space) { user_details_.used_space = used_space; }
 
-void Session::set_initialised() {
-  initialised_ = true;
-}
+void Session::set_initialised() { initialised_ = true; }
 
-void Session::set_keyword(const Keyword& keyword) {  
+void Session::set_keyword(const Keyword& keyword) {
   keyword_.reset(new Keyword(keyword.string()));
   return;
 }
@@ -131,8 +103,7 @@ void Session::set_password(const Password& password) {
   return;
 }
 
-void Session::set_keyword_pin_password(const Keyword& keyword,
-                                       const Pin& pin,
+void Session::set_keyword_pin_password(const Keyword& keyword, const Pin& pin,
                                        const Password& password) {
   set_keyword(keyword);
   set_pin(pin);
@@ -144,7 +115,7 @@ void Session::set_bootstrap_endpoints(const std::vector<Endpoint>& bootstrap_end
   bootstrap_endpoints_ = bootstrap_endpoints;
 }
 
-std::vector<std::pair<std::string, uint16_t> > Session::bootstrap_endpoints() const {
+std::vector<std::pair<std::string, uint16_t>> Session::bootstrap_endpoints() const {
   return bootstrap_endpoints_;
 }
 
@@ -178,8 +149,8 @@ NonEmptyString Session::Serialise() {
   user_data->set_max_space(max_space());
   user_data->set_used_space(used_space());
 
-  data_atlas.set_timestamp(boost::lexical_cast<std::string>(
-      GetDurationSinceEpoch().total_microseconds()));
+  data_atlas.set_timestamp(
+      boost::lexical_cast<std::string>(GetDurationSinceEpoch().total_microseconds()));
 
   NonEmptyString serialised_keyring(passport_.Serialise());
   PassportData* passport_data(data_atlas.mutable_passport_data());

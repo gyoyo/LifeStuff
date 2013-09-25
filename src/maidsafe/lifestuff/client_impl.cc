@@ -22,31 +22,26 @@ namespace maidsafe {
 namespace lifestuff {
 
 ClientImpl::ClientImpl(const Slots& slots)
-  : logged_in_(false),
-    keyword_(),
-    confirmation_keyword_(),
-    pin_(),
-    confirmation_pin_(),
-    password_(),
-    confirmation_password_(),
-    current_password_(),
-    session_(),
-    client_maid_(session_, slots),
-    client_mpid_() {}
+    : logged_in_(false),
+      keyword_(),
+      confirmation_keyword_(),
+      pin_(),
+      confirmation_pin_(),
+      password_(),
+      confirmation_password_(),
+      current_password_(),
+      session_(),
+      client_maid_(session_, slots),
+      client_mpid_() {}
 
 ClientImpl::~ClientImpl() {}
 
-void ClientImpl::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
+void ClientImpl::InsertUserInput(uint32_t position, const std::string& characters,
+                                 InputField input_field) {
   switch (input_field) {
-    case kKeyword: {
-      return detail::InsertUserInput<Keyword>()(keyword_, position, characters);
-    }
-    case kPin: {
-      return detail::InsertUserInput<Pin>()(pin_, position, characters);
-    }
-    case kPassword: {
-      return detail::InsertUserInput<Password>()(password_, position, characters);
-    }
+    case kKeyword: { return detail::InsertUserInput<Keyword>()(keyword_, position, characters); }
+    case kPin: { return detail::InsertUserInput<Pin>()(pin_, position, characters); }
+    case kPassword: { return detail::InsertUserInput<Password>()(password_, position, characters); }
     case kConfirmationKeyword: {
       return detail::InsertUserInput<Keyword>()(confirmation_keyword_, position, characters);
     }
@@ -67,15 +62,9 @@ void ClientImpl::InsertUserInput(uint32_t position, const std::string& character
 
 void ClientImpl::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
   switch (input_field) {
-    case kKeyword: {
-      return detail::RemoveUserInput<Keyword>()(keyword_, position, length);
-    }
-    case kPin: {
-      return detail::RemoveUserInput<Pin>()(pin_, position, length);
-    }
-    case kPassword: {
-      return detail::RemoveUserInput<Password>()(password_, position, length);
-    }
+    case kKeyword: { return detail::RemoveUserInput<Keyword>()(keyword_, position, length); }
+    case kPin: { return detail::RemoveUserInput<Pin>()(pin_, position, length); }
+    case kPassword: { return detail::RemoveUserInput<Password>()(password_, position, length); }
     case kConfirmationKeyword: {
       return detail::RemoveUserInput<Keyword>()(confirmation_keyword_, position, length);
     }
@@ -96,27 +85,15 @@ void ClientImpl::RemoveUserInput(uint32_t position, uint32_t length, InputField 
 
 void ClientImpl::ClearUserInput(InputField input_field) {
   switch (input_field) {
-    case kKeyword: {
-      return detail::ClearUserInput<Keyword>()(keyword_);
-    }
-    case kPin: {
-      return detail::ClearUserInput<Pin>()(pin_);
-    }
-    case kPassword: {
-      return detail::ClearUserInput<Password>()(password_);
-    }
-    case kConfirmationKeyword: {
-      return detail::ClearUserInput<Keyword>()(confirmation_keyword_);
-    }
-    case kConfirmationPin: {
-      return detail::ClearUserInput<Pin>()(confirmation_pin_);
-    }
+    case kKeyword: { return detail::ClearUserInput<Keyword>()(keyword_); }
+    case kPin: { return detail::ClearUserInput<Pin>()(pin_); }
+    case kPassword: { return detail::ClearUserInput<Password>()(password_); }
+    case kConfirmationKeyword: { return detail::ClearUserInput<Keyword>()(confirmation_keyword_); }
+    case kConfirmationPin: { return detail::ClearUserInput<Pin>()(confirmation_pin_); }
     case kConfirmationPassword: {
       return detail::ClearUserInput<Password>()(confirmation_password_);
     }
-    case kCurrentPassword: {
-      return detail::ClearUserInput<Password>()(current_password_);
-    }
+    case kCurrentPassword: { return detail::ClearUserInput<Password>()(current_password_); }
     default:
       ThrowError(CommonErrors::unknown);
   }
@@ -125,26 +102,19 @@ void ClientImpl::ClearUserInput(InputField input_field) {
 
 bool ClientImpl::ConfirmUserInput(InputField input_field) {
   switch (input_field) {
-    case kKeyword: {
-      return detail::ConfirmUserInput<Keyword>()(keyword_);
-    }
-    case kPin: {
-      return detail::ConfirmUserInput<Pin>()(pin_);
-    }
-    case kPassword: {
-      return detail::ConfirmUserInput<Password>()(password_);
-    }
+    case kKeyword: { return detail::ConfirmUserInput<Keyword>()(keyword_); }
+    case kPin: { return detail::ConfirmUserInput<Pin>()(pin_); }
+    case kPassword: { return detail::ConfirmUserInput<Password>()(password_); }
     case kConfirmationKeyword: {
       return detail::ConfirmUserInput<Keyword>()(keyword_, confirmation_keyword_);
     }
-    case kConfirmationPin: {
-      return detail::ConfirmUserInput<Pin>()(pin_, confirmation_pin_);
-    }
+    case kConfirmationPin: { return detail::ConfirmUserInput<Pin>()(pin_, confirmation_pin_); }
     case kConfirmationPassword: {
       return detail::ConfirmUserInput<Password>()(password_, confirmation_password_);
     }
     case kCurrentPassword: {
-      return detail::ConfirmUserInput<Password>()(password_, confirmation_password_, current_password_, session_);
+      return detail::ConfirmUserInput<Password>()(password_, confirmation_password_,
+                                                  current_password_, session_);
     }
     default:
       ThrowError(CommonErrors::unknown);
@@ -171,26 +141,17 @@ void ClientImpl::LogIn(const boost::filesystem::path& storage_path,
   return;
 }
 
-void ClientImpl::LogOut() {
-  client_maid_.LogOut();
-}
+void ClientImpl::LogOut() { client_maid_.LogOut(); }
 
-void ClientImpl::MountDrive() {
-  client_maid_.MountDrive();
-}
+void ClientImpl::MountDrive() { client_maid_.MountDrive(); }
 
-void ClientImpl::UnMountDrive() {
-  client_maid_.UnMountDrive();
-}
+void ClientImpl::UnMountDrive() { client_maid_.UnMountDrive(); }
 
 void ClientImpl::ChangeKeyword(ReportProgressFunction& report_progress) {
   report_progress(kChangeKeyword, kConfirmingUserInput);
   if (!ConfirmUserInput(kCurrentPassword))
     ThrowError(CommonErrors::invalid_parameter);
-  client_maid_.ChangeKeyword(session_.keyword(),
-                             *keyword_,
-                             session_.pin(),
-                             session_.password(),
+  client_maid_.ChangeKeyword(session_.keyword(), *keyword_, session_.pin(), session_.password(),
                              report_progress);
   keyword_.reset();
   confirmation_keyword_.reset();
@@ -202,10 +163,7 @@ void ClientImpl::ChangePin(ReportProgressFunction& report_progress) {
   report_progress(kChangePin, kConfirmingUserInput);
   if (!ConfirmUserInput(kCurrentPassword))
     ThrowError(CommonErrors::invalid_parameter);
-  client_maid_.ChangePin(session_.keyword(),
-                         session_.pin(),
-                         *pin_,
-                         session_.password(),
+  client_maid_.ChangePin(session_.keyword(), session_.pin(), *pin_, session_.password(),
                          report_progress);
   pin_.reset();
   confirmation_pin_.reset();
@@ -224,17 +182,11 @@ void ClientImpl::ChangePassword(ReportProgressFunction& report_progress) {
   return;
 }
 
-bool ClientImpl::logged_in() const {
-  return logged_in_;
-}
+bool ClientImpl::logged_in() const { return logged_in_; }
 
-boost::filesystem::path ClientImpl::mount_path() {
-  return client_maid_.mount_path();
-}
+boost::filesystem::path ClientImpl::mount_path() { return client_maid_.mount_path(); }
 
-boost::filesystem::path ClientImpl::owner_path() {
-  return client_maid_.owner_path();
-}
+boost::filesystem::path ClientImpl::owner_path() { return client_maid_.owner_path(); }
 
 void ClientImpl::FinaliseUserInput() {
   keyword_->Finalise();

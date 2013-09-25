@@ -73,7 +73,6 @@ typedef std::function<void()> ConfigurationErrorFunction;
 // Associate storage location with drive directory.
 typedef std::function<void()> OnServiceAddedFunction;
 
-
 // Slots are used to provide useful information back to the client application.
 struct Slots {
   UpdateAvailableFunction update_available;

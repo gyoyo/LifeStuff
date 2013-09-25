@@ -23,12 +23,12 @@
 namespace maidsafe {
 namespace lifestuff {
 
-LifeStuff::LifeStuff(const Slots& slots)
-  : client_impl_(new ClientImpl(slots)) {}
+LifeStuff::LifeStuff(const Slots& slots) : client_impl_(new ClientImpl(slots)) {}
 
 LifeStuff::~LifeStuff() {}
 
-void LifeStuff::InsertUserInput(uint32_t position, const std::string& characters, InputField input_field) {
+void LifeStuff::InsertUserInput(uint32_t position, const std::string& characters,
+                                InputField input_field) {
   return client_impl_->InsertUserInput(position, characters, input_field);
 }
 
@@ -44,7 +44,8 @@ bool LifeStuff::ConfirmUserInput(InputField input_field) {
   return client_impl_->ConfirmUserInput(input_field);
 }
 
-void LifeStuff::CreateUser(const std::string& storage_path, ReportProgressFunction& report_progress) {
+void LifeStuff::CreateUser(const std::string& storage_path,
+                           ReportProgressFunction& report_progress) {
   return client_impl_->CreateUser(storage_path, report_progress);
 }
 
@@ -52,17 +53,11 @@ void LifeStuff::LogIn(const std::string& storage_path, ReportProgressFunction& r
   return client_impl_->LogIn(storage_path, report_progress);
 }
 
-void LifeStuff::LogOut() {
-  return client_impl_->LogOut();
-}
+void LifeStuff::LogOut() { return client_impl_->LogOut(); }
 
-void LifeStuff::MountDrive() {
-  return client_impl_->MountDrive();
-}
+void LifeStuff::MountDrive() { return client_impl_->MountDrive(); }
 
-void LifeStuff::UnMountDrive() {
-  return client_impl_->UnMountDrive();
-}
+void LifeStuff::UnMountDrive() { return client_impl_->UnMountDrive(); }
 
 void LifeStuff::ChangeKeyword(ReportProgressFunction& report_progress) {
   return client_impl_->ChangeKeyword(report_progress);
@@ -76,17 +71,11 @@ void LifeStuff::ChangePassword(ReportProgressFunction& report_progress) {
   return client_impl_->ChangePassword(report_progress);
 }
 
-bool LifeStuff::logged_in() const {
-  return client_impl_->logged_in();
-}
+bool LifeStuff::logged_in() const { return client_impl_->logged_in(); }
 
-std::string LifeStuff::mount_path() {
-  return client_impl_->mount_path().string();
-}
+std::string LifeStuff::mount_path() { return client_impl_->mount_path().string(); }
 
-std::string LifeStuff::owner_path() {
-  return client_impl_->owner_path().string();
-}
+std::string LifeStuff::owner_path() { return client_impl_->owner_path().string(); }
 
 }  // namespace lifestuff
 }  // namespace maidsafe

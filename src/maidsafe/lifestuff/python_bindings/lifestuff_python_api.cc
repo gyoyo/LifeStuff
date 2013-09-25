@@ -18,13 +18,13 @@
 
 #include "boost/filesystem/path.hpp"
 #ifdef __MSVC__
-#  pragma warning(push)
-#  pragma warning(disable: 4100 4127 4244)
+#pragma warning(push)
+#pragma warning(disable : 4100 4127 4244)
 #endif
 #include "boost/python.hpp"
 #include "boost/python/call.hpp"
 #ifdef __MSVC__
-#  pragma warning(pop)
+#pragma warning(pop)
 #endif
 
 #include "maidsafe/common/log.h"
@@ -58,12 +58,10 @@ namespace {
 
 class LifeStuffPython {
  public:
-  LifeStuffPython(const ls::Slots& slots)
-   : lifestuff_(slots) {}
+  LifeStuffPython(const ls::Slots& slots) : lifestuff_(slots) {}
   ~LifeStuffPython() {}
 
-  void InsertUserInput(uint32_t position,
-                       const std::string& character,
+  void InsertUserInput(uint32_t position, const std::string& character,
                        ls::InputField input_field) {
     lifestuff_.InsertUserInput(position, character, input_field);
   }
@@ -75,28 +73,29 @@ class LifeStuffPython {
     return lifestuff_.ConfirmUserInput(input_field);
   }
 
-  void CreateUser(const std::string& vault_path, PyObject *py_callback) {
-    ls::ReportProgressFunction cb([this, py_callback](ls::Action action,
-                                                      ls::ProgressCode progresscode) {
-                                    this->ProgressCB(action, progresscode, py_callback);
-                                  });
+  void CreateUser(const std::string& vault_path, PyObject* py_callback) {
+    ls::ReportProgressFunction cb([this, py_callback](
+        ls::Action action,
+        ls::ProgressCode progresscode) { this->ProgressCB(action, progresscode, py_callback); });
     lifestuff_.CreateUser(vault_path, cb);
   }
-  void LogIn(PyObject *py_callback) {
-    ls::ReportProgressFunction cb([this, py_callback](ls::Action action,
-                                                      ls::ProgressCode progresscode) {
-                                    this->ProgressCB(action, progresscode, py_callback);
-                                  });
-  // TODO FIXME (dirvine)  lifestuff_.LogIn(cb);
+  void LogIn(PyObject* py_callback) {
+    ls::ReportProgressFunction cb([this, py_callback](
+        ls::Action action,
+        ls::ProgressCode progresscode) { this->ProgressCB(action, progresscode, py_callback); });
+    // TODO FIXME (dirvine)  lifestuff_.LogIn(cb);
   }
   void LogOut() { lifestuff_.LogOut(); }
 
   void MountDrive() { lifestuff_.MountDrive(); }
   void UnMountDrive() { lifestuff_.UnMountDrive(); }
 
-  void ChangeKeyword() { /*lifestuff_.ChangeKeyword();*/ }  // FIXME (Qi)
-  void ChangePin() { /*lifestuff_.ChangePin();*/ }  // FIXME (Qi)
-  void ChangePassword() { /*lifestuff_.ChangePassword();*/ }  // FIXME (Qi)
+  void ChangeKeyword() { /*lifestuff_.ChangeKeyword();*/
+  }                      // FIXME (Qi)
+  void ChangePin() {     /*lifestuff_.ChangePin();*/
+  }                      // FIXME (Qi)
+  void ChangePassword() {/*lifestuff_.ChangePassword();*/
+  }                      // FIXME (Qi)
 
   bool logged_in() { return lifestuff_.logged_in(); }
 
@@ -104,7 +103,7 @@ class LifeStuffPython {
   std::string owner_path() { return lifestuff_.owner_path(); }
 
  private:
-  void ProgressCB(ls::Action action, ls::ProgressCode progresscode, PyObject *py_callback) {
+  void ProgressCB(ls::Action action, ls::ProgressCode progresscode, PyObject* py_callback) {
     std::cout << "action : " << action << " , progresscode : " << progresscode << std::endl;
     boost::python::call<void>(py_callback, action, progresscode);
   }
@@ -115,8 +114,8 @@ class LifeStuffPython {
 void SetEmptySlots(maidsafe::lifestuff::Slots* pslots) {
   assert(pslots);
   auto string_callback = [](const std::string&) {};  // NOLINT
-  auto int32_callback = [](int32_t) {};  // NOLINT
-  auto bool_callback = [](bool) {};  // NOLINT
+  auto int32_callback = [](int32_t) {};              // NOLINT
+  auto bool_callback = [](bool) {};                  // NOLINT
 
   pslots->update_available = string_callback;
   pslots->network_health = int32_callback;
@@ -144,7 +143,7 @@ struct PathExtractor {
     assert(value);
     typedef bpy::converter::rvalue_from_python_storage<boost::filesystem::path> storage_type;
     void* storage = reinterpret_cast<storage_type*>(data)->storage.bytes;
-    new(storage) boost::filesystem::path(value);
+    new (storage) boost::filesystem::path(value);
     data->convertible = storage;
   }
 };
@@ -158,19 +157,17 @@ struct NonEmptyStringExtractor {
     assert(value);
     typedef bpy::converter::rvalue_from_python_storage<maidsafe::NonEmptyString> storage_type;
     void* storage = reinterpret_cast<storage_type*>(data)->storage.bytes;
-    new(storage) maidsafe::NonEmptyString(value);
+    new (storage) maidsafe::NonEmptyString(value);
     data->convertible = storage;
   }
 };
 
 struct SlotsExtractor {
-  static void* convertible(PyObject* obj_ptr) {
-    return PyDict_Check(obj_ptr) ? obj_ptr : nullptr;
-  }
+  static void* convertible(PyObject* obj_ptr) { return PyDict_Check(obj_ptr) ? obj_ptr : nullptr; }
   static void construct(PyObject*, bpy::converter::rvalue_from_python_stage1_data* data) {
     typedef bpy::converter::rvalue_from_python_storage<maidsafe::lifestuff::Slots> storage_type;
     void* storage = reinterpret_cast<storage_type*>(data)->storage.bytes;
-    auto pslots = new(storage) maidsafe::lifestuff::Slots();
+    auto pslots = new (storage) maidsafe::lifestuff::Slots();
     SetEmptySlots(pslots);
     // TODO(Steve) connect slots as per passed in dictionary
     data->convertible = storage;
@@ -182,25 +179,22 @@ struct SlotsExtractor {
 BOOST_PYTHON_MODULE(lifestuff_python_api) {
   maidsafe::log::Logging::Instance().Initialise(0, nullptr);
   LOG(kInfo) << "Initialising LifeStuff Python API";
-//   bpy::register_exception_translator<std::exception>([](const std::exception& ex) {
-//     PyErr_SetString(PyExc_RuntimeError, ex.what());
-//   });
+  //   bpy::register_exception_translator<std::exception>([](const std::exception& ex) {
+  //     PyErr_SetString(PyExc_RuntimeError, ex.what());
+  //   });
   bpy::to_python_converter<boost::filesystem::path, PathConverter>();
   bpy::to_python_converter<maidsafe::NonEmptyString, NonEmptyStringConverter>();
-  bpy::converter::registry::push_back(&PathExtractor::convertible,
-                                      &PathExtractor::construct,
+  bpy::converter::registry::push_back(&PathExtractor::convertible, &PathExtractor::construct,
                                       bpy::type_id<boost::filesystem::path>());
   bpy::converter::registry::push_back(&NonEmptyStringExtractor::convertible,
                                       &NonEmptyStringExtractor::construct,
                                       bpy::type_id<maidsafe::NonEmptyString>());
-  bpy::converter::registry::push_back(&SlotsExtractor::convertible,
-                                      &SlotsExtractor::construct,
+  bpy::converter::registry::push_back(&SlotsExtractor::convertible, &SlotsExtractor::construct,
                                       bpy::type_id<maidsafe::lifestuff::Slots>());
 
-  bpy::class_<LifeStuffPython, boost::noncopyable>(
-      "LifeStuff", bpy::init<ls::Slots>())
+  bpy::class_<LifeStuffPython, boost::noncopyable>("LifeStuff", bpy::init<ls::Slots>())
 
-       // Credential Operations
+      // Credential Operations
       .def("InsertUserInput", &LifeStuffPython::InsertUserInput)
       .def("RemoveUserInput", &LifeStuffPython::RemoveUserInput)
       .def("ClearUserInput", &LifeStuffPython::ClearUserInput)

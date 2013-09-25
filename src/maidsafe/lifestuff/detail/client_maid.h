@@ -63,34 +63,21 @@ class ClientMaid {
   ClientMaid(Session& session, const Slots& slots);
   ~ClientMaid();
 
-  void CreateUser(const Keyword& keyword,
-                  const Pin& pin,
-                  const Password& password,
+  void CreateUser(const Keyword& keyword, const Pin& pin, const Password& password,
                   const boost::filesystem::path& storage_path,
                   ReportProgressFunction& report_progress);
-  void LogIn(const Keyword& keyword,
-             const Pin& pin,
-             const Password& password,
-             const boost::filesystem::path& storage_path,
-             ReportProgressFunction& report_progress);
+  void LogIn(const Keyword& keyword, const Pin& pin, const Password& password,
+             const boost::filesystem::path& storage_path, ReportProgressFunction& report_progress);
   void LogOut();
 
   void MountDrive();
   void UnMountDrive();
 
-  void ChangeKeyword(const Keyword& old_keyword,
-                     const Keyword& new_keyword,
-                     const Pin& pin,
-                     const Password& password,
-                     ReportProgressFunction& report_progress);
-  void ChangePin(const Keyword& keyword,
-                 const Pin& old_pin,
-                 const Pin& new_pin,
-                 const Password& password,
-                 ReportProgressFunction& report_progress);
-  void ChangePassword(const Keyword& keyword,
-                      const Pin& pin,
-                      const Password& new_password,
+  void ChangeKeyword(const Keyword& old_keyword, const Keyword& new_keyword, const Pin& pin,
+                     const Password& password, ReportProgressFunction& report_progress);
+  void ChangePin(const Keyword& keyword, const Pin& old_pin, const Pin& new_pin,
+                 const Password& password, ReportProgressFunction& report_progress);
+  void ChangePassword(const Keyword& keyword, const Pin& pin, const Password& new_password,
                       ReportProgressFunction& report_progress);
 
   boost::filesystem::path mount_path();
@@ -111,10 +98,13 @@ class ClientMaid {
 
   void UnCreateUser(bool fobs_confirmed, bool drive_mounted);
 
-  template<typename Fob> void PutFob(const Fob& fob);
-  template<typename Fob> void DeleteFob(const typename Fob::Name& fob_name);
-  template<typename Fob> Fob GetFob(const typename Fob::Name& fob_name);
-  
+  template <typename Fob>
+  void PutFob(const Fob& fob);
+  template <typename Fob>
+  void DeleteFob(const typename Fob::Name& fob_name);
+  template <typename Fob>
+  Fob GetFob(const typename Fob::Name& fob_name);
+
   void PutFreeFobs();
   void PutPaidFobs();
 

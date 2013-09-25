@@ -22,44 +22,35 @@ namespace maidsafe {
 namespace lifestuff {
 
 RoutingHandler::RoutingHandler(const Maid& maid, PublicKeyRequestFunction public_key_request)
-  : routing_(maid),
-    public_key_request_(public_key_request),
-    network_health_(),
-    mutex_(),
-    condition_variable_(),
-    asio_service_(2) {
+    : routing_(maid),
+      public_key_request_(public_key_request),
+      network_health_(),
+      mutex_(),
+      condition_variable_(),
+      asio_service_(2) {
   asio_service_.Start();
 }
 
-RoutingHandler::~RoutingHandler() {
-  asio_service_.Stop();
-}
+RoutingHandler::~RoutingHandler() { asio_service_.Stop(); }
 
 void RoutingHandler::Join(const EndPointVector& bootstrap_endpoints) {
   routing_.Join(InitialiseFunctors(), UdpEndpoints(bootstrap_endpoints));
   return;
 }
 
-RoutingHandler::Routing& RoutingHandler::routing() {
-  return routing_;
-}
+RoutingHandler::Routing& RoutingHandler::routing() { return routing_; }
 
-AsioService& RoutingHandler::asio_service() {
-  return asio_service_;
-}
+AsioService& RoutingHandler::asio_service() { return asio_service_; }
 
 RoutingHandler::Functors RoutingHandler::InitialiseFunctors() {
   Functors functors;
-  functors.network_status = [this](const int& network_health) {
-                              OnNetworkStatusChange(network_health);
-                            };
-  functors.request_public_key = [this](const NodeId& node_id,
-                                       const routing::GivePublicKeyFunctor& give_key) {
-                                  OnPublicKeyRequested(node_id, give_key);
-                                };
-  functors.new_bootstrap_endpoint = [this](const UdpEndPoint& endpoint) {
-                                      OnNewBootstrapEndpoint(endpoint);
-                                    };
+  functors.network_status = [this](const int &
+                                   network_health) { OnNetworkStatusChange(network_health); };
+  functors.request_public_key = [this](
+      const NodeId & node_id,
+      const routing::GivePublicKeyFunctor & give_key) { OnPublicKeyRequested(node_id, give_key); };
+  functors.new_bootstrap_endpoint = [this](const UdpEndPoint &
+                                           endpoint) { OnNewBootstrapEndpoint(endpoint); };
   return functors;
 }
 
@@ -69,8 +60,7 @@ void RoutingHandler::OnMessageReceived(const std::string& message,
 }
 
 void RoutingHandler::DoOnMessageReceived(const std::string& /*message*/,
-                                         const ReplyFunctor& /*reply_functor*/) {
-}
+                                         const ReplyFunctor& /*reply_functor*/) {}
 
 void RoutingHandler::OnNetworkStatusChange(const int& network_health) {
   asio_service_.service().post([=] { DoOnNetworkStatusChange(network_health); });
@@ -79,16 +69,14 @@ void RoutingHandler::OnNetworkStatusChange(const int& network_health) {
 void RoutingHandler::DoOnNetworkStatusChange(const int& network_health) {
   if (network_health >= 0) {
     if (network_health >= network_health_)
-      LOG(kVerbose) << "Init - " << DebugId(routing_.kNodeId())
-                    << " - Network health is " << network_health
-                    << "% (was " << network_health_ << "%)";
+      LOG(kVerbose) << "Init - " << DebugId(routing_.kNodeId()) << " - Network health is "
+                    << network_health << "% (was " << network_health_ << "%)";
     else
-      LOG(kWarning) << "Init - " << DebugId(routing_.kNodeId())
-                    << " - Network health is " << network_health
-                    << "% (was " << network_health_ << "%)";
+      LOG(kWarning) << "Init - " << DebugId(routing_.kNodeId()) << " - Network health is "
+                    << network_health << "% (was " << network_health_ << "%)";
   } else {
-    LOG(kWarning) << "Init - " << DebugId(routing_.kNodeId())
-                  << " - Network is down (" << network_health << ")";
+    LOG(kWarning) << "Init - " << DebugId(routing_.kNodeId()) << " - Network is down ("
+                  << network_health << ")";
   }
   network_health_ = network_health;
 }
@@ -107,8 +95,7 @@ void RoutingHandler::OnNewBootstrapEndpoint(const UdpEndPoint& endpoint) {
   asio_service_.service().post([=] { DoOnNewBootstrapEndpoint(endpoint); });
 }
 
-void RoutingHandler::DoOnNewBootstrapEndpoint(const UdpEndPoint& /*endpoint*/) {
-}
+void RoutingHandler::DoOnNewBootstrapEndpoint(const UdpEndPoint& /*endpoint*/) {}
 
 RoutingHandler::UdpEndPointVector RoutingHandler::UdpEndpoints(const EndPointVector& endpoints) {
   std::vector<UdpEndPoint> udp_endpoints;
