@@ -49,9 +49,9 @@ void UserStorage::MountDrive(StoragePtr storage, Session& session,
       LOG(kError) << "Failed to create mount dir(" << mount_path_ << "): " << error_code.message();
     }
   }
-  drive_.reset(new Drive(storage, session.passport().Get<Maid>(true), session.unique_user_id(),
+  drive_.reset(new Drive(storage, session.unique_user_id(),
                          session.drive_root_id(), mount_path_, kDriveLogo.string(),
-                         session.max_space(), session.used_space()));
+                         service_added));
   mount_thread_ = std::move(std::thread([this] { drive_->Mount(); }));
   mount_status_ = drive_->WaitUntilMounted();
 #endif

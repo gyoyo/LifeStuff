@@ -59,8 +59,8 @@ class UserStorageTest : public testing::Test {
     PublicKeyRequestFunction public_key_request([this](
         const NodeId & /*node_id*/,
         const GivePublicKeyFunctor & /*give_key*/) { LOG(kInfo) << "Public key requested."; });
-    passport::Maid maid(session_.passport().template Get<passport::Maid>(true));
-    passport::Pmid::Name pmid_name(session_.passport().template Get<passport::Pmid>(true).name());
+    passport::Maid maid(session_.passport().Get<passport::Maid>(true));
+    passport::Pmid::Name pmid_name(session_.passport().Get<passport::Pmid>(true).name());
     routing_handler_.reset(new RoutingHandler(maid, public_key_request));
     client_nfs_.reset(new nfs_client::MaidNodeNfs(routing_handler_->asio_service(),
                                                   routing_handler_->routing(),

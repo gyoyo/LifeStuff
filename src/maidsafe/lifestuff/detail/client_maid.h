@@ -43,7 +43,7 @@ class ClientMaid {
   typedef std::unique_ptr<ClientController> ClientControllerPtr;
   typedef nfs_client::MaidNodeNfs Storage;
   typedef std::shared_ptr<Storage> StoragePtr;
-  typedef UserStorage UserStorage;
+//  typedef UserStorage UserStorage;
   typedef passport::Passport Passport;
   typedef passport::Anmid Anmid;
   typedef passport::Ansmid Ansmid;
