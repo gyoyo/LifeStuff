@@ -43,6 +43,7 @@ class ClientMaid {
   typedef std::unique_ptr<ClientController> ClientControllerPtr;
   typedef nfs_client::MaidNodeNfs Storage;
   typedef std::shared_ptr<Storage> StoragePtr;
+  typedef std::unique_ptr<Session> SessionPtr;
 //  typedef UserStorage UserStorage;
   typedef passport::Passport Passport;
   typedef passport::Anmid Anmid;
@@ -60,7 +61,7 @@ class ClientMaid {
   typedef passport::PublicMaid PublicMaid;
   typedef passport::PublicPmid PublicPmid;
 
-  ClientMaid(Session& session, const Slots& slots);
+  ClientMaid(SessionPtr& session, const Slots& slots);
   ~ClientMaid();
 
   void CreateUser(const Keyword& keyword, const Pin& pin, const Password& password,
@@ -96,7 +97,7 @@ class ClientMaid {
   void RegisterPmid(const Maid& maid, const Pmid& pmid);
   void UnregisterPmid(const Maid& maid, const Pmid& pmid);
 
-  void UnCreateUser(bool fobs_confirmed, bool drive_mounted);
+  void UnCreateUser(bool pmid_registered, bool drive_mounted);
 
   template <typename Fob>
   void PutFob(const Fob& fob);
@@ -111,7 +112,7 @@ class ClientMaid {
   void PublicKeyRequest(const NodeId& node_id, const GivePublicKeyFunctor& give_key);
 
   Slots slots_;
-  Session& session_;
+  SessionPtr& session_;
   ClientControllerPtr client_controller_;
   StoragePtr storage_;
   UserStorage user_storage_;

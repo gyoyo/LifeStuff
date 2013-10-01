@@ -50,6 +50,8 @@ class Session {
   typedef std::pair<std::string, uint16_t> Endpoint;
 
   Session();
+  explicit Session(const NonEmptyString& serialised_data_atlas);
+
   ~Session();
 
   Passport& passport();
@@ -80,7 +82,6 @@ class Session {
   void set_bootstrap_endpoints(const std::vector<Endpoint>& bootstrap_endpoints);
   std::vector<Endpoint> bootstrap_endpoints() const;
 
-  void Parse(const NonEmptyString& serialised_session);
   NonEmptyString Serialise();
 
   friend class test::SessionTest;
@@ -105,7 +106,7 @@ class Session {
     NonEmptyString session_name;
   };
 
-  Passport passport_;
+  std::unique_ptr<Passport> passport_;
   std::vector<Endpoint> bootstrap_endpoints_;
   UserDetails user_details_;
   bool initialised_;

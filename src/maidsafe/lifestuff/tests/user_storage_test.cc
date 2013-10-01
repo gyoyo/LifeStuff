@@ -42,25 +42,24 @@ class UserStorageTest : public testing::Test {
   typedef std::shared_ptr<RoutingHandler> RoutingHandlerPtr;
   typedef std::shared_ptr<nfs_client::MaidNodeNfs> ClientNfsPtr;
   typedef std::shared_ptr<UserStorage> UserStoragePtr;
+  typedef std::unique_ptr<Session> SessionPtr;
 
   UserStorageTest()
       : test_dir_(maidsafe::test::CreateTestPath()),
         mount_dir_(*test_dir_ / RandomAlphaNumericString(8)),
-        session_(),
+        session_(new Session),
         routing_handler_(),
         client_nfs_(),
         user_storage_() {}
 
  protected:
   void SetUp() {
-    session_.passport().CreateFobs();
-    session_.passport().ConfirmFobs();
-    session_.set_unique_user_id(Identity(RandomAlphaNumericString(64)));
+    session_->set_unique_user_id(Identity(RandomAlphaNumericString(64)));
     PublicKeyRequestFunction public_key_request([this](
         const NodeId & /*node_id*/,
         const GivePublicKeyFunctor & /*give_key*/) { LOG(kInfo) << "Public key requested."; });
-    passport::Maid maid(session_.passport().Get<passport::Maid>(true));
-    passport::Pmid::Name pmid_name(session_.passport().Get<passport::Pmid>(true).name());
+    passport::Maid maid(session_->passport().template Get<passport::Maid>());
+    passport::Pmid::Name pmid_name(session_->passport().template Get<passport::Pmid>().name());
     routing_handler_.reset(new RoutingHandler(maid, public_key_request));
     client_nfs_.reset(new nfs_client::MaidNodeNfs(routing_handler_->asio_service(),
                                                   routing_handler_->routing(),
@@ -72,7 +71,7 @@ class UserStorageTest : public testing::Test {
 
   void MountDrive() {
     lifestuff::OnServiceAddedFunction on_service_added([]() { LOG(kInfo) << "Service added."; });
-    user_storage_->MountDrive(client_nfs_, session_, on_service_added);
+    user_storage_->MountDrive(client_nfs_, *session_, on_service_added);
     ASSERT_TRUE(user_storage_->mount_status());
   }
 
@@ -82,7 +81,7 @@ class UserStorageTest : public testing::Test {
 
   maidsafe::test::TestPath test_dir_;
   fs::path mount_dir_;
-  Session session_;
+  SessionPtr session_;
   RoutingHandlerPtr routing_handler_;
   ClientNfsPtr client_nfs_;
   UserStoragePtr user_storage_;

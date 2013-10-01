@@ -65,7 +65,7 @@ class ClientImpl {
   std::unique_ptr<Keyword> keyword_, confirmation_keyword_;
   std::unique_ptr<Pin> pin_, confirmation_pin_;
   std::unique_ptr<Password> password_, confirmation_password_, current_password_;
-  Session session_;
+  std::unique_ptr<Session> session_;
   ClientMaid client_maid_;
   ClientMpid client_mpid_;
 };

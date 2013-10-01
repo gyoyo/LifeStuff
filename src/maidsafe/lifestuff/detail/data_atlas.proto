@@ -19,7 +19,7 @@
 package maidsafe.lifestuff;
 
 message PassportData {
-  required bytes serialised_keyring = 1;
+  required bytes serialised_passport = 1;
 }
 
 message UserData {

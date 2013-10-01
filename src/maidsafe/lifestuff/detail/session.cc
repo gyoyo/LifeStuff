@@ -33,7 +33,7 @@ namespace maidsafe {
 namespace lifestuff {
 
 Session::Session()
-    : passport_(),
+    : passport_(new Passport),
       bootstrap_endpoints_(),
       user_details_(),
       initialised_(false),
@@ -41,9 +41,27 @@ Session::Session()
       pin_(),
       password_() {}
 
+Session::Session(const NonEmptyString& serialised_data_atlas) {
+  DataAtlas data_atlas;
+  data_atlas.ParseFromString(serialised_data_atlas.string());
+
+  if (data_atlas.user_data().unique_user_id().empty()) {
+    LOG(kError) << "Unique user ID is empty.";
+    return;
+  }
+
+  set_unique_user_id(Identity(data_atlas.user_data().unique_user_id()));
+  set_drive_root_id(Identity(data_atlas.user_data().drive_root_id()));
+  set_storage_path(data_atlas.user_data().storage_path());
+  set_max_space(data_atlas.user_data().max_space());
+  set_used_space(data_atlas.user_data().used_space());
+
+  passport_.reset(new Passport(NonEmptyString(data_atlas.passport_data().serialised_passport())));
+}
+
 Session::~Session() {}
 
-Session::Passport& Session::passport() { return passport_; }
+Session::Passport& Session::passport() { return *passport_; }
 
 NonEmptyString Session::session_name() const { return user_details_.session_name; }
 
@@ -119,26 +137,6 @@ std::vector<std::pair<std::string, uint16_t>> Session::bootstrap_endpoints() con
   return bootstrap_endpoints_;
 }
 
-void Session::Parse(const NonEmptyString& serialised_data_atlas) {
-  DataAtlas data_atlas;
-  data_atlas.ParseFromString(serialised_data_atlas.string());
-
-  if (data_atlas.user_data().unique_user_id().empty()) {
-    LOG(kError) << "Unique user ID is empty.";
-    return;
-  }
-
-  set_unique_user_id(Identity(data_atlas.user_data().unique_user_id()));
-  set_drive_root_id(Identity(data_atlas.user_data().drive_root_id()));
-  set_storage_path(data_atlas.user_data().storage_path());
-  set_max_space(data_atlas.user_data().max_space());
-  set_used_space(data_atlas.user_data().used_space());
-
-  passport_.Parse(NonEmptyString(data_atlas.passport_data().serialised_keyring()));
-
-  return;
-}
-
 NonEmptyString Session::Serialise() {
   DataAtlas data_atlas;
 
@@ -152,9 +150,9 @@ NonEmptyString Session::Serialise() {
   data_atlas.set_timestamp(
       boost::lexical_cast<std::string>(GetDurationSinceEpoch().total_microseconds()));
 
-  NonEmptyString serialised_keyring(passport_.Serialise());
+  NonEmptyString serialised_passport(passport_->Serialise());
   PassportData* passport_data(data_atlas.mutable_passport_data());
-  passport_data->set_serialised_keyring(serialised_keyring.string());
+  passport_data->set_serialised_passport(serialised_passport.string());
 
   return NonEmptyString(data_atlas.SerializeAsString());
 }

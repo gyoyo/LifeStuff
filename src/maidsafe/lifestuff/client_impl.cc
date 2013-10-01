@@ -114,7 +114,7 @@ bool ClientImpl::ConfirmUserInput(InputField input_field) {
     }
     case kCurrentPassword: {
       return detail::ConfirmUserInput<Password>()(password_, confirmation_password_,
-                                                  current_password_, session_);
+                                                  current_password_, *session_);
     }
     default:
       ThrowError(CommonErrors::unknown);
@@ -151,7 +151,7 @@ void ClientImpl::ChangeKeyword(ReportProgressFunction& report_progress) {
   report_progress(kChangeKeyword, kConfirmingUserInput);
   if (!ConfirmUserInput(kCurrentPassword))
     ThrowError(CommonErrors::invalid_parameter);
-  client_maid_.ChangeKeyword(session_.keyword(), *keyword_, session_.pin(), session_.password(),
+  client_maid_.ChangeKeyword(session_->keyword(), *keyword_, session_->pin(), session_->password(),
                              report_progress);
   keyword_.reset();
   confirmation_keyword_.reset();
@@ -163,7 +163,7 @@ void ClientImpl::ChangePin(ReportProgressFunction& report_progress) {
   report_progress(kChangePin, kConfirmingUserInput);
   if (!ConfirmUserInput(kCurrentPassword))
     ThrowError(CommonErrors::invalid_parameter);
-  client_maid_.ChangePin(session_.keyword(), session_.pin(), *pin_, session_.password(),
+  client_maid_.ChangePin(session_->keyword(), session_->pin(), *pin_, session_->password(),
                          report_progress);
   pin_.reset();
   confirmation_pin_.reset();
@@ -175,7 +175,7 @@ void ClientImpl::ChangePassword(ReportProgressFunction& report_progress) {
   report_progress(kChangePassword, kConfirmingUserInput);
   if (!ConfirmUserInput(kCurrentPassword))
     ThrowError(CommonErrors::invalid_parameter);
-  client_maid_.ChangePassword(session_.keyword(), session_.pin(), *password_, report_progress);
+  client_maid_.ChangePassword(session_->keyword(), session_->pin(), *password_, report_progress);
   password_.reset();
   confirmation_password_.reset();
   current_password_.reset();
