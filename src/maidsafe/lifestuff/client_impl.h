@@ -19,9 +19,9 @@
 #ifndef MAIDSAFE_LIFESTUFF_CLIENT_IMPL_H_
 #define MAIDSAFE_LIFESTUFF_CLIENT_IMPL_H_
 
-#include "boost/filesystem/path.hpp"
-
 #include <string>
+
+#include "boost/filesystem/path.hpp"
 
 #include "maidsafe/lifestuff/lifestuff.h"
 #include "maidsafe/lifestuff/detail/client_maid.h"

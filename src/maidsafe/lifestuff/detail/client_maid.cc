@@ -283,5 +283,5 @@ void ClientMaid::PublicKeyRequest(const NodeId& node_id, const GivePublicKeyFunc
   }
 }
 
-}  // namesapce lifestuff
-}  // namesapce maidsafe
+}  // namespace lifestuff
+}  // namespace maidsafe
