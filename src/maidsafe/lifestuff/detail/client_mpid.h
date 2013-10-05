@@ -27,7 +27,6 @@ namespace lifestuff {
 
 class ClientMpid {
  public:
-
   ClientMpid();
   ~ClientMpid() {}
 
@@ -36,7 +35,7 @@ class ClientMpid {
  private:
 };
 
-}  // lifestuff
-}  // maidsafe
+}  // namespace lifestuff
+}  // namespace maidsafe
 
 #endif  // MAIDSAFE_LIFESTUFF_DETAIL_CLIENT_MPID_H_

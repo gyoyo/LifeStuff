@@ -21,6 +21,8 @@
 
 #include <functional>
 #include <string>
+#include <utility>
+#include <vector>
 #include <mutex>
 #include <condition_variable>
 

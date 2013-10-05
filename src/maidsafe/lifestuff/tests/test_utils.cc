@@ -18,6 +18,7 @@
 
 #include "maidsafe/lifestuff/tests/test_utils.h"
 
+#include <algorithm>
 #include <random>
 
 #include "maidsafe/common/utils.h"

@@ -21,6 +21,8 @@
 
 #include "boost/filesystem/path.hpp"
 
+#include <string>
+
 #include "maidsafe/lifestuff/lifestuff.h"
 #include "maidsafe/lifestuff/detail/client_maid.h"
 #include "maidsafe/lifestuff/detail/client_mpid.h"

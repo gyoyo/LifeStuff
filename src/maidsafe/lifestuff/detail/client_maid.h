@@ -44,7 +44,6 @@ class ClientMaid {
   typedef nfs_client::MaidNodeNfs Storage;
   typedef std::shared_ptr<Storage> StoragePtr;
   typedef std::unique_ptr<Session> SessionPtr;
-//  typedef UserStorage UserStorage;
   typedef passport::Passport Passport;
   typedef passport::Anmid Anmid;
   typedef passport::Ansmid Ansmid;
@@ -85,7 +84,6 @@ class ClientMaid {
   boost::filesystem::path owner_path();
 
  private:
-
   const Slots& CheckSlots(const Slots& slots);
 
   void PutSession(const Keyword& keyword, const Pin& pin, const Password& password);
@@ -119,7 +117,7 @@ class ClientMaid {
   RoutingHandlerPtr routing_handler_;
 };
 
-}  // lifestuff
-}  // maidsafe
+}  // namespace lifestuff
+}  // namespace maidsafe
 
 #endif  // MAIDSAFE_LIFESTUFF_DETAIL_CLIENT_MAID_H_

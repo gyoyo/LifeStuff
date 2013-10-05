@@ -18,6 +18,8 @@
 
 #include "maidsafe/lifestuff/detail/client_maid.h"
 
+#include <vector>
+
 namespace maidsafe {
 namespace lifestuff {
 
@@ -281,5 +283,5 @@ void ClientMaid::PublicKeyRequest(const NodeId& node_id, const GivePublicKeyFunc
   }
 }
 
-}  // lifestuff
-}  // maidsafe
+}  // namesapce lifestuff
+}  // namesapce maidsafe

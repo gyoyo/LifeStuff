@@ -58,7 +58,7 @@ namespace {
 
 class LifeStuffPython {
  public:
-  LifeStuffPython(const ls::Slots& slots) : lifestuff_(slots) {}
+  explicit LifeStuffPython(const ls::Slots& slots) : lifestuff_(slots) {}
   ~LifeStuffPython() {}
 
   void InsertUserInput(uint32_t position, const std::string& character,
@@ -83,7 +83,7 @@ class LifeStuffPython {
     ls::ReportProgressFunction cb([this, py_callback](
         ls::Action action,
         ls::ProgressCode progresscode) { this->ProgressCB(action, progresscode, py_callback); });
-    // TODO FIXME (dirvine)  lifestuff_.LogIn(cb);
+    // TODO(dirvine)  lifestuff_.LogIn(cb);
   }
   void LogOut() { lifestuff_.LogOut(); }
 

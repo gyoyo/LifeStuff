@@ -20,6 +20,7 @@
 #define MAIDSAFE_LIFESTUFF_LIFESTUFF_API_H_
 
 #include <memory>
+#include <string>
 
 #include "maidsafe/lifestuff/lifestuff.h"
 

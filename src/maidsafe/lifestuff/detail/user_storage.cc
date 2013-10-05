@@ -18,6 +18,8 @@
 
 #include "maidsafe/lifestuff/detail/user_storage.h"
 
+#include <string>
+
 #include "boost/filesystem/path.hpp"
 
 #include "maidsafe/common/utils.h"

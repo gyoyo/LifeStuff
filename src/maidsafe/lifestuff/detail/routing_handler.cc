@@ -18,6 +18,8 @@
 
 #include "maidsafe/lifestuff/detail/routing_handler.h"
 
+#include <vector>
+
 namespace maidsafe {
 namespace lifestuff {
 
@@ -44,13 +46,13 @@ AsioService& RoutingHandler::asio_service() { return asio_service_; }
 
 RoutingHandler::Functors RoutingHandler::InitialiseFunctors() {
   Functors functors;
-  functors.network_status = [this](const int &
-                                   network_health) { OnNetworkStatusChange(network_health); };
+  functors.network_status = [this](const int& network_health) {
+      OnNetworkStatusChange(network_health); };
   functors.request_public_key = [this](
-      const NodeId & node_id,
-      const routing::GivePublicKeyFunctor & give_key) { OnPublicKeyRequested(node_id, give_key); };
-  functors.new_bootstrap_endpoint = [this](const UdpEndPoint &
-                                           endpoint) { OnNewBootstrapEndpoint(endpoint); };
+      const NodeId& node_id,
+      const routing::GivePublicKeyFunctor& give_key) { OnPublicKeyRequested(node_id, give_key); };
+  functors.new_bootstrap_endpoint = [this](const UdpEndPoint& endpoint) {
+      OnNewBootstrapEndpoint(endpoint); };
   return functors;
 }
 

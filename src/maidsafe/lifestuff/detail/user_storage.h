@@ -19,6 +19,8 @@
 #ifndef MAIDSAFE_LIFESTUFF_DETAIL_USER_STORAGE_H_
 #define MAIDSAFE_LIFESTUFF_DETAIL_USER_STORAGE_H_
 
+#include <string>
+
 #include "boost/regex.hpp"
 #include "boost/filesystem/path.hpp"
 #include "boost/filesystem/operations.hpp"
@@ -67,7 +69,6 @@ struct Drive {
 
 class UserStorage {
  public:
-
   typedef nfs_client::MaidNodeNfs Storage;
   typedef std::shared_ptr<Storage> StoragePtr;
   typedef Drive<Storage>::MaidDrive Drive;

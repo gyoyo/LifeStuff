@@ -509,7 +509,7 @@ TEST_F(UserStorageTest, FUNC_FunctionalTest) {
 //  EXPECT_EQ(file_content, copy_file_content);
 //
 //  UnMountDrive(user_storage2_);
-//}
+// }
 //
 // TEST_F(UserStorageTest, FUNC_SaveDataMapAndConstructFile) {
 //  MountDrive(user_storage1_, &session1_);
@@ -537,7 +537,7 @@ TEST_F(UserStorageTest, FUNC_FunctionalTest) {
 //  EXPECT_TRUE(ReadFile(mount_dir / retrived_file_name_copy, &copy_file_content));
 //  EXPECT_EQ(file_content, copy_file_content);
 //  UnMountDrive(user_storage1_);
-//}
+// }
 
 }  // namespace test
 }  // namespace lifestuff
