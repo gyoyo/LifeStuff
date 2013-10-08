@@ -33,7 +33,7 @@ void UserStorage::MountDrive(StoragePtr storage, Session& session,
                              OnServiceAddedFunction on_service_added) {
   if (mount_status_)
     return;
-  drive::OnServiceAdded service_added = [on_service_added]() { on_service_added(); };
+  drive::OnServiceAdded service_added = [on_service_added]() { on_service_added(); };  // NOLINT - Brian
   std::string product_id;
 #ifdef WIN32
   mount_path_ = drive::GetNextAvailableDrivePath();

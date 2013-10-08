@@ -50,7 +50,7 @@ RoutingHandler::Functors RoutingHandler::InitialiseFunctors() {
       OnNetworkStatusChange(network_health); };
   functors.request_public_key = [this](
       const NodeId& node_id,
-      const routing::GivePublicKeyFunctor& give_key) { OnPublicKeyRequested(node_id, give_key); };
+      const routing::GivePublicKeyFunctor& give_key) { OnPublicKeyRequested(node_id, give_key); };  // NOLINT - Brian
   functors.new_bootstrap_endpoint = [this](const UdpEndPoint& endpoint) {
       OnNewBootstrapEndpoint(endpoint); };
   return functors;

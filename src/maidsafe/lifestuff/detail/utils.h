@@ -19,6 +19,8 @@
 #ifndef MAIDSAFE_LIFESTUFF_DETAIL_UTILS_H_
 #define MAIDSAFE_LIFESTUFF_DETAIL_UTILS_H_
 
+#include <string>
+
 #include "maidsafe/lifestuff/detail/session.h"
 
 namespace maidsafe {

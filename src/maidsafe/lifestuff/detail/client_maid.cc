@@ -18,6 +18,7 @@
 
 #include "maidsafe/lifestuff/detail/client_maid.h"
 
+#include <string>
 #include <vector>
 
 namespace maidsafe {

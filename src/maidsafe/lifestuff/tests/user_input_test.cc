@@ -42,7 +42,7 @@ class UserInputTest : public testing::Test {
     Slots slots;
     UpdateAvailableFunction update_available([](const std::string&) {});
     NetworkHealthFunction network_health([](int32_t) {});
-    OperationsPendingFunction operations_pending([](bool) {});
+    OperationsPendingFunction operations_pending([](bool) {});  // NOLINT - Brian
     OnServiceAddedFunction on_service_added([]() {});
     slots.update_available = update_available;
     slots.network_health = network_health;
