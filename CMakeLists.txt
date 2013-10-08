@@ -158,6 +158,7 @@ file(APPEND ${ExportFile} "# Set postfixes\n")
 file(APPEND ${ExportFile} "set(CMAKE_DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})\n")
 file(APPEND ${ExportFile} "set(CMAKE_RELWITHDEBINFO_POSTFIX ${CMAKE_RELWITHDEBINFO_POSTFIX})\n")
 file(APPEND ${ExportFile} "set(CMAKE_MINSIZEREL_POSTFIX ${CMAKE_MINSIZEREL_POSTFIX})\n\n")
+file(APPEND ${ExportFile} "set(BoostLocaleLibs ${BoostLocaleLibs})\n\n")
 export(TARGETS maidsafe_lifestuff
                maidsafe_lifestuff_detail
                maidsafe_lifestuff_manager
