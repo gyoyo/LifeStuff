@@ -61,8 +61,8 @@ class RoutingHandler {
 
   void OnMessageReceived(const std::string& message, const ReplyFunctor& reply_functor);
   void DoOnMessageReceived(const std::string& message, const ReplyFunctor& reply_functor);
-  void OnNetworkStatusChange(const int& network_health);
-  void DoOnNetworkStatusChange(const int& network_health);
+  void OnNetworkStatusChange(int network_health);
+  void DoOnNetworkStatusChange(int network_health);
   void OnPublicKeyRequested(const NodeId& node_id, const GivePublicKeyFunctor& give_key);
   void DoOnPublicKeyRequested(const NodeId& node_id, const GivePublicKeyFunctor& give_key);
   void OnNewBootstrapEndpoint(const UdpEndPoint& endpoint);

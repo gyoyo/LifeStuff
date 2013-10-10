@@ -100,9 +100,9 @@ void Session::set_storage_path(const boost::filesystem::path& vault_path) {
   user_details_.storage_path = vault_path;
 }
 
-void Session::set_max_space(const int64_t& max_space) { user_details_.max_space = max_space; }
+void Session::set_max_space(int64_t max_space) { user_details_.max_space = max_space; }
 
-void Session::set_used_space(const int64_t& used_space) { user_details_.used_space = used_space; }
+void Session::set_used_space(int64_t used_space) { user_details_.used_space = used_space; }
 
 void Session::set_initialised() { initialised_ = true; }
 

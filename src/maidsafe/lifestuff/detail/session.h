@@ -71,8 +71,8 @@ class Session {
   void set_unique_user_id(const Identity& unique_user_id);
   void set_drive_root_id(const Identity& drive_root_id);
   void set_storage_path(const boost::filesystem::path& storage_path);
-  void set_max_space(const int64_t& max_space);
-  void set_used_space(const int64_t& used_space);
+  void set_max_space(int64_t max_space);
+  void set_used_space(int64_t used_space);
   void set_initialised();
   void set_keyword(const Keyword& keyword);
   void set_pin(const Pin& pin);

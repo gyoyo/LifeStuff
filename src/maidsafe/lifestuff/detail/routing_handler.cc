@@ -46,7 +46,7 @@ AsioService& RoutingHandler::asio_service() { return asio_service_; }
 
 RoutingHandler::Functors RoutingHandler::InitialiseFunctors() {
   Functors functors;
-  functors.network_status = [this](const int& network_health) {
+  functors.network_status = [this](int network_health) {
       OnNetworkStatusChange(network_health); };
   functors.request_public_key = [this](
       const NodeId& node_id,
@@ -64,11 +64,11 @@ void RoutingHandler::OnMessageReceived(const std::string& message,
 void RoutingHandler::DoOnMessageReceived(const std::string& /*message*/,
                                          const ReplyFunctor& /*reply_functor*/) {}
 
-void RoutingHandler::OnNetworkStatusChange(const int& network_health) {
+void RoutingHandler::OnNetworkStatusChange(int network_health) {
   asio_service_.service().post([=] { DoOnNetworkStatusChange(network_health); });
 }
 
-void RoutingHandler::DoOnNetworkStatusChange(const int& network_health) {
+void RoutingHandler::DoOnNetworkStatusChange(int network_health) {
   if (network_health >= 0) {
     if (network_health >= network_health_)
       LOG(kVerbose) << "Init - " << DebugId(routing_.kNodeId()) << " - Network health is "
