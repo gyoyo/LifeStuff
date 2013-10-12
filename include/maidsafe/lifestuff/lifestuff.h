@@ -67,7 +67,7 @@ typedef std::function<void(const std::string&)> UpdateAvailableFunction;
 // Network health.
 typedef std::function<void(int32_t)> NetworkHealthFunction;
 // Safe to quit.
-typedef std::function<void(bool)> OperationsPendingFunction;
+typedef std::function<void(bool)> OperationsPendingFunction;  // NOLINT Brian
 // Config file parsing error.
 typedef std::function<void()> ConfigurationErrorFunction;
 // Associate storage location with drive directory.
