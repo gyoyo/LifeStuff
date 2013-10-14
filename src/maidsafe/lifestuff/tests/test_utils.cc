@@ -255,7 +255,7 @@ bool CompareDirectoryEntries(fs::path const& drive_path, fs::path const& disk_pa
     iterator first = drive_files.begin(), last = drive_files.end(), found;
     for (; first != last; ++first) {
       found = disk_files.find(*first);
-      if (found == drive_files.end())
+      if (found == disk_files.end())
         return false;
     }
   }
