@@ -108,17 +108,14 @@ void Session::set_initialised() { initialised_ = true; }
 
 void Session::set_keyword(const Keyword& keyword) {
   keyword_.reset(new Keyword(keyword.string()));
-  return;
 }
 
 void Session::set_pin(const Pin& pin) {
   pin_.reset(new Pin(pin.string()));
-  return;
 }
 
 void Session::set_password(const Password& password) {
   password_.reset(new Password(password.string()));
-  return;
 }
 
 void Session::set_keyword_pin_password(const Keyword& keyword, const Pin& pin,
@@ -126,7 +123,6 @@ void Session::set_keyword_pin_password(const Keyword& keyword, const Pin& pin,
   set_keyword(keyword);
   set_pin(pin);
   set_password(password);
-  return;
 }
 
 void Session::set_bootstrap_endpoints(const std::vector<Endpoint>& bootstrap_endpoints) {

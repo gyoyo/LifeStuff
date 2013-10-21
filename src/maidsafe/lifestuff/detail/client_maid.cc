@@ -71,7 +71,6 @@ void ClientMaid::CreateUser(const Keyword& keyword, const Pin& pin, const Passwo
     UnCreateUser(pmid_registered, drive_mounted);
     boost::throw_exception(e);
   }
-  return;
 }
 
 void ClientMaid::LogIn(const Keyword& keyword, const Pin& pin, const Password& password,
@@ -105,7 +104,6 @@ void ClientMaid::LogIn(const Keyword& keyword, const Pin& pin, const Password& p
     storage_.reset();
     boost::throw_exception(e);
   }
-  return;
 }
 
 void ClientMaid::LogOut() {

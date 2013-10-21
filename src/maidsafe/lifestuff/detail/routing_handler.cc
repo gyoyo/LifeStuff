@@ -37,7 +37,6 @@ RoutingHandler::~RoutingHandler() { asio_service_.Stop(); }
 
 void RoutingHandler::Join(const EndPointVector& bootstrap_endpoints) {
   routing_.Join(InitialiseFunctors(), UdpEndpoints(bootstrap_endpoints));
-  return;
 }
 
 RoutingHandler::Routing& RoutingHandler::routing() { return routing_; }

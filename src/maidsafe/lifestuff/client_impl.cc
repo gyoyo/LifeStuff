@@ -57,7 +57,6 @@ void ClientImpl::InsertUserInput(uint32_t position, const std::string& character
     default:
       ThrowError(CommonErrors::unknown);
   }
-  return;
 }
 
 void ClientImpl::RemoveUserInput(uint32_t position, uint32_t length, InputField input_field) {
@@ -80,7 +79,6 @@ void ClientImpl::RemoveUserInput(uint32_t position, uint32_t length, InputField 
     default:
       ThrowError(CommonErrors::unknown);
   }
-  return;
 }
 
 void ClientImpl::ClearUserInput(InputField input_field) {
@@ -97,7 +95,6 @@ void ClientImpl::ClearUserInput(InputField input_field) {
     default:
       ThrowError(CommonErrors::unknown);
   }
-  return;
 }
 
 bool ClientImpl::ConfirmUserInput(InputField input_field) {
@@ -129,7 +126,6 @@ void ClientImpl::CreateUser(const boost::filesystem::path& storage_path,
   client_maid_.CreateUser(*keyword_, *pin_, *password_, storage_path, report_progress);
   ResetInput();
   logged_in_ = true;
-  return;
 }
 
 void ClientImpl::LogIn(const boost::filesystem::path& storage_path,
@@ -138,7 +134,6 @@ void ClientImpl::LogIn(const boost::filesystem::path& storage_path,
   client_maid_.LogIn(*keyword_, *pin_, *password_, storage_path, report_progress);
   ResetInput();
   logged_in_ = true;
-  return;
 }
 
 void ClientImpl::LogOut() { client_maid_.LogOut(); }
@@ -156,7 +151,6 @@ void ClientImpl::ChangeKeyword(ReportProgressFunction& report_progress) {
   keyword_.reset();
   confirmation_keyword_.reset();
   current_password_.reset();
-  return;
 }
 
 void ClientImpl::ChangePin(ReportProgressFunction& report_progress) {
@@ -168,7 +162,6 @@ void ClientImpl::ChangePin(ReportProgressFunction& report_progress) {
   pin_.reset();
   confirmation_pin_.reset();
   current_password_.reset();
-  return;
 }
 
 void ClientImpl::ChangePassword(ReportProgressFunction& report_progress) {
@@ -179,7 +172,6 @@ void ClientImpl::ChangePassword(ReportProgressFunction& report_progress) {
   password_.reset();
   confirmation_password_.reset();
   current_password_.reset();
-  return;
 }
 
 bool ClientImpl::logged_in() const { return logged_in_; }
@@ -192,7 +184,6 @@ void ClientImpl::FinaliseUserInput() {
   keyword_->Finalise();
   pin_->Finalise();
   password_->Finalise();
-  return;
 }
 
 void ClientImpl::ResetInput() {
